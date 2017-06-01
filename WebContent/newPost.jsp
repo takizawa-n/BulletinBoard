@@ -11,6 +11,9 @@
 </head>
 <body>
 <div class="main-contents">
+	<h2>■□　新規投稿画面　□■</h2><br />
+	<br />
+	<br />
 <c:if test="${ not empty errorMessages }">
 	<div class="errorMessages">
 		<ul>

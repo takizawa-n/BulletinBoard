@@ -13,8 +13,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 
-import bulletinBoard.beans.Message;
-import bulletinBoard.beans.User;
+import bulletinBoard.beans.Messagees;
+import bulletinBoard.beans.Users;
 import bulletinBoard.service.MessageService;
 
 @WebServlet(urlPatterns = { "/newPost" })
@@ -33,8 +33,8 @@ public class NewPostServlet extends HttpServlet {
 
 		HttpSession session = request.getSession();
 		List<String> messages = new ArrayList<String>();
-		User user = (User) session.getAttribute("loginUser");
-		Message post = new Message();
+		Users user = (Users) session.getAttribute("loginUser");
+		Messagees post = new Messagees();
 		post.setTitle(request.getParameter("title"));
 		post.setText(request.getParameter("text"));
 		post.setCategory(request.getParameter("category"));

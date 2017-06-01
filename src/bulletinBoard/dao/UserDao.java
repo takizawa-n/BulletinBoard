@@ -10,13 +10,13 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import bulletinBoard.beans.User;
+import bulletinBoard.beans.Users;
 import bulletinBoard.exception.NoRowsUpdatedRuntimeException;
 import bulletinBoard.exception.SQLRuntimeException;
 
 public class UserDao {
 
-	public User getUser(Connection connection, String loginId,
+	public Users getUser(Connection connection, String loginId,
 			String password) {
 
 		PreparedStatement ps = null;
@@ -28,7 +28,7 @@ public class UserDao {
 			ps.setString(2, password);
 
 			ResultSet rs = ps.executeQuery();
-			List<User> userList = toUserList(rs);
+			List<Users> userList = toUserList(rs);
 			if (userList.isEmpty() == true) {
 				return null;
 			} else if (2 <= userList.size()) {
@@ -43,9 +43,9 @@ public class UserDao {
 		}
 	}
 
-	private List<User> toUserList(ResultSet rs) throws SQLException {
+	private List<Users> toUserList(ResultSet rs) throws SQLException {
 
-		List<User> ret = new ArrayList<User>();
+		List<Users> ret = new ArrayList<Users>();
 		try {
 			while (rs.next()) {
 				int id = rs.getInt("id");
@@ -58,7 +58,7 @@ public class UserDao {
 				Timestamp insertDate = rs.getTimestamp("insert_date");
 				Timestamp updateDate = rs.getTimestamp("update_date");
 
-				User user = new User();
+				Users user = new Users();
 				user.setId(id);
 				user.setLoginId(loginId);
 				user.setPassword(password);
@@ -78,7 +78,7 @@ public class UserDao {
 	}
 
 
-	public void insert(Connection connection, User user) {
+	public void insert(Connection connection, Users user) {
 
 		PreparedStatement ps = null;
 		try {
@@ -119,7 +119,7 @@ public class UserDao {
 		}
 	}
 
-	public void update(Connection connection, User user) {
+	public void update(Connection connection, Users user) {
 
 		PreparedStatement ps = null;
 		try {
@@ -159,7 +159,7 @@ public class UserDao {
 
 	}
 
-	public User getUser(Connection connection, int id) {
+	public Users getUser(Connection connection, int id) {
 
 		PreparedStatement ps = null;
 		try {
@@ -169,7 +169,7 @@ public class UserDao {
 			ps.setInt(1, id);
 
 			ResultSet rs = ps.executeQuery();
-			List<User> userList = toUserList(rs);
+			List<Users> userList = toUserList(rs);
 			if (userList.isEmpty() == true) {
 				return null;
 			} else if (2 <= userList.size()) {
@@ -184,4 +184,23 @@ public class UserDao {
 		}
 	}
 
+	public List<Users> getUsers(Connection connection, int num) {
+
+		PreparedStatement ps = null;
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT * FROM users ");
+			sql.append("ORDER BY is_working, branch_id, section_id, name DESC limit " + num);
+
+			ps = connection.prepareStatement(sql.toString());
+
+			ResultSet rs = ps.executeQuery();
+			List<Users> ret = toUserList(rs);
+			return ret;
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
 }

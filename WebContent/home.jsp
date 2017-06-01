@@ -20,11 +20,11 @@
 	</c:if>
 	<c:if test="${ not empty loginUser }">
 
-	<h2>■□　新規投稿画面　□■</h2><br />
+		<h1>■□　掲示板　□■</h1><br />
 	<br />
 	<br />
 		<a href="newPost">新規投稿</a>
-		<a href="settings">ユーザー管理</a>
+		<a href="manage">ユーザー管理</a>
 	</c:if>
 </div>
 
@@ -33,7 +33,6 @@
 	<div class="profile">
 		<div class="name"><h3>@<c:out value="${loginUser.name}" /></h3></div>
 	</div>
-</c:if>
 
 <div class="messages">
 	<c:forEach items="${messages}" var="message">
@@ -51,6 +50,8 @@
 			************
 	</c:forEach>
 </div>
+</c:if>
+
 <br />
 <br />
 <br />

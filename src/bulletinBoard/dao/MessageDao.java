@@ -6,11 +6,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import bulletinBoard.beans.Message;
+import bulletinBoard.beans.Messagees;
 import bulletinBoard.exception.SQLRuntimeException;
 
 public class MessageDao {
-	public void insert(Connection connection, Message message) {
+	public void insert(Connection connection, Messagees message) {
 
 		PreparedStatement ps = null;
 		try {

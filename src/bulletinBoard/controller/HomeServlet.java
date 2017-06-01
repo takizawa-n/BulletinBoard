@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import bulletinBoard.beans.User;
+import bulletinBoard.beans.Users;
 import bulletinBoard.beans.UsersMessages;
 import bulletinBoard.service.MessageService;
 
@@ -22,7 +22,8 @@ import bulletinBoard.service.MessageService;
 		protected void doGet(HttpServletRequest request,
 				HttpServletResponse response) throws IOException, ServletException {
 
-			User user = (User) request.getSession().getAttribute("loginUser");
+			//●この一行は必要か。
+			Users user = (Users) request.getSession().getAttribute("loginUser");
 
 			List<UsersMessages> messages = new MessageService().getMessage();
 

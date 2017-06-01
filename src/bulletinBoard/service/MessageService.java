@@ -6,14 +6,14 @@ import static bulletinBoard.utils.DBUtil.*;
 import java.sql.Connection;
 import java.util.List;
 
-import bulletinBoard.beans.Message;
+import bulletinBoard.beans.Messagees;
 import bulletinBoard.beans.UsersMessages;
 import bulletinBoard.dao.MessageDao;
 import bulletinBoard.dao.UsersMessagesDao;
 
 public class MessageService {
 
-	public void register(Message message) {
+	public void register(Messagees message) {
 
 		Connection connection = null;
 		try {

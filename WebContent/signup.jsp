@@ -22,20 +22,33 @@
 	<c:remove var="errorMessages" scope="session"/>
 </c:if>
 <form action="signup" method="post"><br />
-	<label for="name">名前</label>
-	<input name="name" value="${user.name}" id="name"/>（名前はあなたの公開プロフィールに表示されます）<br />
-
-	<label for="account">アカウント名</label>
-	<input name="account"  value="${user.account}"id="account"/>（あなたの公開プロフィール: http://localhost:8080/Chapter6/?account=アカウント名）<br />
+	<label for="login_id">ログインID</label>
+	<input name="login_id" value="${user.login_id}" id="login_id"/><br />
 
 	<label for="password">パスワード</label>
-	<input name="password"  type="password" id="password"/> <br />
+	<input name="password"  type="password" id="password"/><br />
 
-	<label for="email">メールアドレス</label>
-	<input name="email" value="${user.email}" id="email"/> <br />
+	<label for="password2">パスワード（確認用）</label>
+	<input name="password2"  type="password" id="password2"/><br />
 
-	<label for="description">説明</label>
-	<textarea name="description"  cols="35" rows="5" id="description"><c:out value="${user.description}" /></textarea> <br />
+
+	<label for="name">名称</label>
+	<input name="name" value="${user.name}" type="text" id="name"/><br />
+
+	<label for="branch_id">支店</label>
+	<p>
+	<select name="branchTable">
+	<option value="${branches.id}">"${branches.name}"</option>
+	</select>
+	</p>
+
+	<label for="section_id">部署・役職</label>
+	<p>
+	<select name="sectionsTable">
+	<option value="${sections.id}">"${sections.name}"</option>
+	</select>
+	</p>
+
 
 	<input type="submit" value="登録" /> <br />
 	<a href="./">戻る</a>
