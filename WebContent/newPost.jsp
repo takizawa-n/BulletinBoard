@@ -26,7 +26,7 @@
 </c:if>
 <form action="newPost" method="post"><br />
 	<label for="title">件名(1～50文字)</label><br />
-	<textarea name="title"  cols="35" rows="5" id="title"><c:out value="${post.title}" /></textarea> <br />
+	<input name="title" value="${post.title} id="title" /><br />
 	<br />
 	 <br />
 
@@ -36,7 +36,7 @@
 	  <br />
 
 	<label for="category">カテゴリー(1～10文字)</label><br />
-	<textarea name="category"  cols="35" rows="5" id="category"><c:out value="${post.category}" /></textarea> <br />
+	 <input name="category" value="${post.category}" id="category" /><br />
 	 <br />
 	  <br />
 

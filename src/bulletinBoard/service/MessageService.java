@@ -6,21 +6,21 @@ import static bulletinBoard.utils.DBUtil.*;
 import java.sql.Connection;
 import java.util.List;
 
-import bulletinBoard.beans.Messagees;
+import bulletinBoard.beans.Messages;
 import bulletinBoard.beans.UsersMessages;
-import bulletinBoard.dao.MessageDao;
+import bulletinBoard.dao.MessagesDao;
 import bulletinBoard.dao.UsersMessagesDao;
 
 public class MessageService {
 
-	public void register(Messagees message) {
+	public void register(Messages message) {
 
 		Connection connection = null;
 		try {
 			connection = getConnection();
 
-			MessageDao messageDao = new MessageDao();
-			messageDao.insert(connection, message);
+			MessagesDao messagesDao = new MessagesDao();
+			messagesDao.insert(connection, message);
 
 			commit(connection);
 		} catch (RuntimeException e) {
@@ -36,14 +36,14 @@ public class MessageService {
 
 	private static final int LIMIT_NUM = 1000;
 
-	public List<UsersMessages> getMessage() {
+	public List<UsersMessages> getMessages() {
 
 		Connection connection = null;
 		try {
 			connection = getConnection();
 
-			UsersMessagesDao messageDao = new UsersMessagesDao();
-			List<UsersMessages> ret = messageDao.getUserMessages(connection, LIMIT_NUM);
+			UsersMessagesDao usersMessageDao = new UsersMessagesDao();
+			List<UsersMessages> ret = usersMessageDao.getUsersMessages(connection, LIMIT_NUM);
 
 			commit(connection);
 

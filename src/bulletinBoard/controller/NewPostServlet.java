@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 
-import bulletinBoard.beans.Messagees;
+import bulletinBoard.beans.Messages;
 import bulletinBoard.beans.Users;
 import bulletinBoard.service.MessageService;
 
@@ -34,7 +34,7 @@ public class NewPostServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		List<String> messages = new ArrayList<String>();
 		Users user = (Users) session.getAttribute("loginUser");
-		Messagees post = new Messagees();
+		Messages post = new Messages();
 		post.setTitle(request.getParameter("title"));
 		post.setText(request.getParameter("text"));
 		post.setCategory(request.getParameter("category"));

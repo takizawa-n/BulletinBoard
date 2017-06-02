@@ -47,7 +47,39 @@
 				(投稿日時  <span class="date"><fmt:formatDate value="${message.insertDate}" pattern="yyyy/MM/dd HH:mm:ss" /></span>)
 			</div>
 			<br />
+			<br />
+
+			<form action="comment" method="post"><br />
+				<input type="hidden" name="messageId" value="${message.messageId}">
+				<label for="本文">この投稿にコメントする</label><br />
+				<input name="text" value="${comment.text}" id="textt" /><br />
+				<input type="submit" value="コメントを送信" />(500文字以内) <br />
+				<br />
+			</form>
+
+			<div onclick="obj=document.getElementById('open').style; obj.display=(obj.display=='none')?'block':'none';">
+			<a style="cursor:pointer;">▼　<c:out value="${message.name}" />さんへのコメントを表示する</a>
+			</div>
+
+
+			<div id="open" style="display:none;clear:both;">
+			<!--ここの部分が折りたたまれる＆展開される部分になります。
+			自由に記述してください。-->
+
+			<c:forEach items="${comments}" var="comment">
+			<c:if test="${comment.messageId == message.messageId}">
+				<div class="comment">
+					<div class="name"><c:out value="${comment.name}" />さんのコメント</div>
+					<div class="text"><c:out value="${comment.text}" /></div>
+					<div class="insertDate"><c:out value="${comment.insertDate}" />に投稿</div>
+					===================
+					</div>
+				</c:if>
+			</c:forEach>
+			</div>
+
 			************
+
 	</c:forEach>
 </div>
 </c:if>

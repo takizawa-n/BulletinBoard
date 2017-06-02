@@ -15,6 +15,7 @@
 function toWorking(){
 	if(window.confirm('本当にいいんですね？')){
 		location.href = "manage";
+
 	}
 	else{
 		window.alert('キャンセルされました');
@@ -40,7 +41,7 @@ function notToWorking(){
 <div class="main-contents">
 
 <div class="header">
-	<h2>■□　ユーザー管理画面　□■</h2><br />
+	<h2>■□　ユーザー編集画面　□■</h2><br />
 	<br />
 	<br />
 	<br />
@@ -54,25 +55,27 @@ function notToWorking(){
 <tr><th>ログインID</th><th>名称</th><th>●</th><th>停止/復活</th><th>●</th></tr>
 
 
-
-<tr>
 <c:forEach items="${users}" var="user">
+<tr>
 	<td><c:out value="${user.loginId}"></c:out></td>
 	<td><c:out value="${user.name}"></c:out></td>
 	<td><form action="settings" method="get" >
 		<input type="hidden" name="userId" value="${user.id}">
-		<a href="settings">編集</a>
+		<input type="submit" value="編集" />
 		</form></td>
 	<td><form action="manage" method="post" >
+		<input type="hidden" name="userId" value="${user.id}">
 		<c:if test="${user.isWorking == 1}">
-		<p><input type="button" value="停止する" onClick="return toWorking();"></p>
+		<input type="hidden" name="is_working" value="0">
+		<p><input type="submit" value="停止する" onClick="return toWorking();"></p>
 		</c:if>
 		<c:if test="${user.isWorking == 0}">
-		<p><input type="button" value="復活する" onClick="return notToWorking();"></p>
+		<input type="hidden" name="is_working" value="1">
+		<p><input type="submit" value="復活する" onClick="return notToWorking();"></p>
 		</c:if></form></td>
 	<td><form action="manage" method="post" ><a href="settings">削除する(仮)</a></form></td>
+<tr>
 </c:forEach>
-</tr>
 </table>
 
 

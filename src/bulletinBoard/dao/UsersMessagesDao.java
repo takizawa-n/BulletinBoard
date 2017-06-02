@@ -15,7 +15,7 @@ import bulletinBoard.exception.SQLRuntimeException;
 
 public class UsersMessagesDao {
 
-	public List<UsersMessages> getUserMessages(Connection connection, int num) {
+	public List<UsersMessages> getUsersMessages(Connection connection, int num) {
 
 		PreparedStatement ps = null;
 		try {

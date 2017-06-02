@@ -6,7 +6,7 @@ import static bulletinBoard.utils.DBUtil.*;
 import java.sql.Connection;
 
 import bulletinBoard.beans.Users;
-import bulletinBoard.dao.UserDao;
+import bulletinBoard.dao.UsersDao;
 import bulletinBoard.utils.CipherUtil;
 
 public class LoginService {
@@ -17,7 +17,7 @@ public class LoginService {
 		try {
 			connection = getConnection();
 
-			UserDao userDao = new UserDao();
+			UsersDao userDao = new UsersDao();
 			String encPassword = CipherUtil.encrypt(password);
 			Users user = userDao
 					.getUser(connection, loginId, encPassword);

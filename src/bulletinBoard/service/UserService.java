@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.util.List;
 
 import bulletinBoard.beans.Users;
-import bulletinBoard.dao.UserDao;
+import bulletinBoard.dao.UsersDao;
 import bulletinBoard.utils.CipherUtil;
 
 public class UserService {
@@ -23,7 +23,7 @@ public class UserService {
 			user.setPassword(encPassword);
 
 
-			UserDao userDao = new UserDao();
+			UsersDao userDao = new UsersDao();
 			userDao.insert(connection, user);
 
 			commit(connection);
@@ -48,7 +48,7 @@ public class UserService {
 			String encPassword = CipherUtil.encrypt(user.getPassword());
 			user.setPassword(encPassword);
 
-			UserDao userDao = new UserDao();
+			UsersDao userDao = new UsersDao();
 			userDao.update(connection, user);
 
 			commit(connection);
@@ -69,7 +69,7 @@ public class UserService {
 		try {
 			connection = getConnection();
 
-			UserDao userDao = new UserDao();
+			UsersDao userDao = new UsersDao();
 			Users user = userDao.getUser(connection, userId);
 
 			commit(connection);
@@ -94,8 +94,8 @@ public class UserService {
 		try {
 			connection = getConnection();
 
-			UserDao usersDao = new UserDao();
-			List<Users> ret = usersDao.getUsers(connection, LIMIT_NUM);
+			UsersDao userDao = new UsersDao();
+			List<Users> ret = userDao.getUsers(connection, LIMIT_NUM);
 
 			commit(connection);
 

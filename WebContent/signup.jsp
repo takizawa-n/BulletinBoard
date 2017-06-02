@@ -6,7 +6,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>ユーザー登録</title>
+	<title>ユーザー新規登録</title>
 	<link href="./css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -23,7 +23,7 @@
 </c:if>
 <form action="signup" method="post"><br />
 	<label for="login_id">ログインID</label>
-	<input name="login_id" value="${user.login_id}" id="login_id"/><br />
+	<input name="login_id" value="${user.loginId}" id="login_id"/><br />
 
 	<label for="password">パスワード</label>
 	<input name="password"  type="password" id="password"/><br />
@@ -31,22 +31,27 @@
 	<label for="password2">パスワード（確認用）</label>
 	<input name="password2"  type="password" id="password2"/><br />
 
-
 	<label for="name">名称</label>
 	<input name="name" value="${user.name}" type="text" id="name"/><br />
 
-	<label for="branch_id">支店</label>
 	<p>
-	<select name="branchTable">
-	<option value="${branches.id}">"${branches.name}"</option>
+	<label for="name">支店</label>
+	<select name="branch_id" size="1">
+	<c:forEach items="${branches}" var="branch">
+		<option value="${branch.id}"><c:out value="${branch.name}"></c:out></option>
+	</c:forEach>
 	</select>
+	<br />
 	</p>
 
-	<label for="section_id">部署・役職</label>
 	<p>
-	<select name="sectionsTable">
-	<option value="${sections.id}">"${sections.name}"</option>
+	<label for="name">部署・役職</label>
+	<select name="section_id" size="1">
+	<c:forEach items="${sections}" var="section">
+		<option value="${section.id}"><c:out value="${section.name}"></c:out></option>
+	</c:forEach>
 	</select>
+	<br />
 	</p>
 
 

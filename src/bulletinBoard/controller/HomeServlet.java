@@ -9,8 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import bulletinBoard.beans.Users;
+import bulletinBoard.beans.UsersComments;
 import bulletinBoard.beans.UsersMessages;
+import bulletinBoard.service.CommentService;
 import bulletinBoard.service.MessageService;
 
 
@@ -22,15 +23,20 @@ import bulletinBoard.service.MessageService;
 		protected void doGet(HttpServletRequest request,
 				HttpServletResponse response) throws IOException, ServletException {
 
-			//●この一行は必要か。
-			Users user = (Users) request.getSession().getAttribute("loginUser");
+			List<UsersMessages> messages = new MessageService().getMessages();
+			List<UsersComments> comments = new CommentService().getComments();
 
-			List<UsersMessages> messages = new MessageService().getMessage();
+			System.out.println(messages.size());
+			System.out.println(comments.size());
+			System.out.println(comments.get(1).getMessageId());
 
 			request.setAttribute("messages", messages);
+			request.setAttribute("comments", comments);
 
 			request.getRequestDispatcher("/home.jsp").forward(request, response);
 
-			}
+		}
 
 	}
+
+
