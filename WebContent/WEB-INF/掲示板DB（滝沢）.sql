@@ -13,6 +13,26 @@ CREATE TABLE `bulletin board`.`users` (
  `update_date` TIMESTAMP NOT NULL ,
  PRIMARY KEY (`id`) );
 
+CREATE VIEW `bulletin board`.`users_messages` AS
+(
+SELECT
+	messages.title
+,	messages.text
+,	users.id 	AS users_id
+,	users.name
+,	messages.id		AS messages_id
+,	messages.title
+FROM
+	users
+,	messages
+WHERE
+	author.id = book.author_id
+ORDER BY
+	author.id
+,	book.id
+);
+
+
 CREATE TABLE `bulletin board`.`messages` (
  `id` INT NOT NULL AUTO_INCREMENT ,
  `user_id` INT NOT NULL ,
@@ -28,7 +48,7 @@ CREATE TABLE `bulletin board`.`comments` (
  `user_id` INT NOT NULL ,
  `message_id` INT NOT NULL ,
  `text` VARCHAR(500) NOT NULL ,
- `insert_date` TIMESTAMP NOT NULL ,
+ `insert_date` TIMESTAMP NOT NULL ,sections
  `update_date` TIMESTAMP NOT NULL ,
  PRIMARY KEY (`id`) );
 
@@ -42,3 +62,41 @@ CREATE  TABLE `bulletin board`.`sections` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NOT NULL ,
   PRIMARY KEY (`id`) );
+
+
+
+CREATE
+    ALGORITHM = UNDEFINED 
+    DEFINER = `root`@`localhost` 
+    SQL SECURITY DEFINER
+CREATE VIEW `bulletin board`.`users_messages` AS
+    (select 
+		`bulletin board`.`messages`.`id` AS `message_id`,
+        `bulletin board`.`messages`.`title` AS `title`,
+		`bulletin board`.`messages`.`text` AS `text`,
+        `bulletin board`.`users`.`id` AS `user_id`,
+        `bulletin board`.`users`.`name` AS `name`,
+		`bulletin board`.`messages`.`insert_date` AS `insert_date`
+    from
+        (`bulletin board`.`users`
+        join `bulletin board`.`messages`)
+    where
+        (`bulletin board`.`users`.`id` = `bulletin board`.`messages`.`user_id`)
+    order by `bulletin board`.`messages`.`insert_date`)
+
+
+CREATE VIEW `bulletin board`.`users_comments` AS
+    (select 
+		`bulletin board`.`comments`.`id` AS `comment_id`,
+		`bulletin board`.`users`.`id` AS `user_id`,
+        `bulletin board`.`users`.`name` AS `name`,
+		`bulletin board`.`comments`.`message_id` AS `message_id`,
+		`bulletin board`.`comments`.`text` AS `text`,
+		`bulletin board`.`comments`.`insert_date` AS `insert_date`
+    from
+        (`bulletin board`.`users`
+        join `bulletin board`.`comments`)
+    where
+        (`bulletin board`.`users`.`id` = `bulletin board`.`comments`.`user_id`)
+    order by `bulletin board`.`comments`.`insert_date`)
+

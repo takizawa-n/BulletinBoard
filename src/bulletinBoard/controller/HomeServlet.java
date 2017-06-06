@@ -23,6 +23,8 @@ import bulletinBoard.service.MessageService;
 		protected void doGet(HttpServletRequest request,
 				HttpServletResponse response) throws IOException, ServletException {
 
+
+
 			List<UsersMessages> messages = new MessageService().getMessages();
 			List<UsersComments> comments = new CommentService().getComments();
 

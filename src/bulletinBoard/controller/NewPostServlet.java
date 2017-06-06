@@ -33,12 +33,12 @@ public class NewPostServlet extends HttpServlet {
 
 		HttpSession session = request.getSession();
 		List<String> messages = new ArrayList<String>();
-		Users user = (Users) session.getAttribute("loginUser");
+		Users loginUser = (Users) session.getAttribute("loginUser");
 		Messages post = new Messages();
 		post.setTitle(request.getParameter("title"));
 		post.setText(request.getParameter("text"));
 		post.setCategory(request.getParameter("category"));
-		post.setUserId(user.getId());
+		post.setId(loginUser.getId());
 
 		if (isValid(request, messages) == true) {
 			new MessageService().register(post);

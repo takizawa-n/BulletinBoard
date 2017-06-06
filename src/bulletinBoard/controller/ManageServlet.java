@@ -38,21 +38,11 @@ public class ManageServlet extends HttpServlet {
 
 		List<String> messages = new ArrayList<String>();
 		HttpSession session = request.getSession();
-		int userId = (Integer.parseInt(request.getParameter("userId")));
-		int isWorking = (Integer.parseInt(request.getParameter("is_woking")));
-		if(isWorking ==1){
-			isWorking = 0;
-		}
-		if(isWorking ==0){
-			isWorking = 1;
-		}
-		//ここで、userIdを引数にデータを取り出す。
-		//取り出したデータのis_workingに上のisWorkingをいれたものを、「editUser」に保管する。あとはOK
-		Users editUser = new UserService().getUser(userId);
-		editUser.setIsWorking(isWorking);
+		int userId = (Integer.parseInt(request.getParameter("user_id")));
+		int isWorking = (Integer.parseInt(request.getParameter("is_working")));
 
 		try {
-			new UserService().update(editUser);
+			new UserService().updateIsWorking(userId, isWorking);
 		} catch (NoRowsUpdatedRuntimeException e) {
 			session.removeAttribute("editUser");
 			messages.add("他の人によって更新されています。最新のデータを表示しました。データを確認してください。");

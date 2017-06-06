@@ -63,6 +63,28 @@ public class UserService {
 		}
 	}
 
+
+	public void updateIsWorking(int id, int isWorking) {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+
+			UsersDao userDao = new UsersDao();
+			userDao.updateIsWorking(connection, id, isWorking);
+
+			commit(connection);
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
 	public Users getUser(int userId) {
 
 		Connection connection = null;
@@ -100,6 +122,27 @@ public class UserService {
 			commit(connection);
 
 			return ret;
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
+	public void delete(int id) {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+
+			UsersDao userDao = new UsersDao();
+			userDao.delete(connection, id);
+
+			commit(connection);
 		} catch (RuntimeException e) {
 			rollback(connection);
 			throw e;

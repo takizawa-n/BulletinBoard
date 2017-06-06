@@ -11,6 +11,12 @@
 </head>
 <body>
 <div class="main-contents">
+<c:if test="${ not empty loginUser }">
+<div class="profile">
+		<div class="name"><h3><c:out value="${loginUser.name}" />さんがログイン中です</h3></div>
+		</div>
+</c:if>
+
 	<h2>■□　新規投稿画面　□■</h2><br />
 	<br />
 	<br />
@@ -26,7 +32,7 @@
 </c:if>
 <form action="newPost" method="post"><br />
 	<label for="title">件名(1～50文字)</label><br />
-	<input name="title" value="${post.title} id="title" /><br />
+	<input name="title" value="${post.title}" id="title" /><br />
 	<br />
 	 <br />
 

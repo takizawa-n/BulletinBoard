@@ -25,13 +25,11 @@
 	<br />
 		<a href="newPost">新規投稿</a>
 		<a href="manage">ユーザー管理</a>
-	</c:if>
+
 </div>
 
-
-<c:if test="${ not empty loginUser }">
 	<div class="profile">
-		<div class="name"><h3>@<c:out value="${loginUser.name}" /></h3></div>
+		<div class="name"><h3><c:out value="${loginUser.name}" />さんがログイン中です</h3></div>
 	</div>
 
 <div class="messages">
@@ -52,7 +50,7 @@
 			<form action="comment" method="post"><br />
 				<input type="hidden" name="messageId" value="${message.messageId}">
 				<label for="本文">この投稿にコメントする</label><br />
-				<input name="text" value="${comment.text}" id="textt" /><br />
+				<textarea name="text"  cols="35" rows="5" id="text"><c:out value="${comment.text}" /></textarea><br />
 				<input type="submit" value="コメントを送信" />(500文字以内) <br />
 				<br />
 			</form>

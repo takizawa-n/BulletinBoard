@@ -11,11 +11,18 @@
 </head>
 <body>
 <div class="main-contents">
+
+<c:if test="${ not empty loginUser }">
+<div class="profile">
+		<div class="name"><h3><c:out value="${loginUser.name}" />さんがログイン中です</h3></div>
+		</div>
+</c:if>
+
 <c:if test="${ not empty errorMessages }">
 	<div class="errorMessages">
 		<ul>
-			<c:forEach items="${errorMessages}" var="message">
-				<li><c:out value="${message}" />
+			<c:forEach items="${errorMessages}" var="errorMessage">
+				<li><c:out value="${errorMessage}" />
 			</c:forEach>
 		</ul>
 	</div>
@@ -34,21 +41,32 @@
 	<label for="name">名称</label>
 	<input name="name" value="${user.name}" type="text" id="name"/><br />
 
+
 	<p>
-	<label for="name">支店</label>
-	<select name="branch_id" size="1">
+	<label for="branch_id">支店</label>
+	<select name="branch_id">
 	<c:forEach items="${branches}" var="branch">
+		<c:if test="${ branch.id == user.branchId }">
+		<option value="${branch.id}" selected><c:out value="${branch.name}"></c:out></option>
+		</c:if>
+		<c:if test="${ branch.id != user.branchId }">
 		<option value="${branch.id}"><c:out value="${branch.name}"></c:out></option>
+		</c:if>
 	</c:forEach>
 	</select>
-	<br />
 	</p>
 
 	<p>
-	<label for="name">部署・役職</label>
-	<select name="section_id" size="1">
+	<label for="section_id">部署・役職</label>
+	<select name="section_id">
 	<c:forEach items="${sections}" var="section">
+		<c:if test="${ section.id == user.sectionId }">
+		<option value="${section.id}" selected><c:out value="${section.name}"></c:out></option>
+		</c:if>
+		<c:if test="${section.id != user.sectionId }">
 		<option value="${section.id}"><c:out value="${section.name}"></c:out></option>
+		</c:if>
+
 	</c:forEach>
 	</select>
 	<br />
