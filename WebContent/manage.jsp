@@ -50,12 +50,6 @@ function deleteUser(){
 </head>
 <body>
 <div class="main-contents">
-<c:if test="${ not empty loginUser }">
-		<div class="profile">
-		<div class="name"><h3><c:out value="${loginUser.name}" />さんがログイン中です</h3></div>
-		</div>
-</c:if>
-
 
 <c:if test="${ not empty messages }">
 	<div class="messages">
@@ -66,7 +60,6 @@ function deleteUser(){
 	<c:remove var="message" scope="session"/>
 </c:if>
 
-
 <div class="header">
 	<h2>■□　ユーザー編集画面　□■</h2><br />
 	<br />
@@ -74,7 +67,13 @@ function deleteUser(){
 	<a href="signup">新規登録</a>
 </div>
 <br />
-
+<c:if test="${ not empty loginUser }">
+<div class="profile">
+		<div class="name"><h3><c:out value="${loginUser.name}" />さんがログイン中です</h3></div>
+		</div>
+</c:if>
+<br />
+<br />
 
 
 <table border="5">
@@ -85,12 +84,12 @@ function deleteUser(){
 <tr>
 	<td><c:out value="${user.loginId}"></c:out></td>
 	<td><c:out value="${user.name}"></c:out></td>
-	<td><form action="settings" method="get" >
+	<td><form action="settings" method="get">
 			<input type="hidden" name="userId" value="${user.id}">
 			<input type="submit" value="編集" />
 		</form>
 	</td>
-	<td><form action="manage" method="post" >
+	<td><form action="manage" method="post">
 		<input type="hidden" name="user_id" value="${user.id}">
 			<c:if test="${user.isWorking == 1}">
 				<input type="hidden" name="is_working" value="0">
@@ -115,7 +114,7 @@ function deleteUser(){
 
 
 <br />
-<br />
+<br />	<a href="./">ホームへもどる</a>
 <br />
 <br />
 <div class="copyright">Copyright(c)Naoko Takizawa</div>

@@ -15,6 +15,9 @@ import org.apache.commons.lang.StringUtils;
 
 import bulletinBoard.beans.Messages;
 import bulletinBoard.beans.Users;
+import bulletinBoard.beans.UsersComments;
+import bulletinBoard.beans.UsersMessages;
+import bulletinBoard.service.CommentService;
 import bulletinBoard.service.MessageService;
 
 @WebServlet(urlPatterns = { "/newPost" })
@@ -32,50 +35,58 @@ public class NewPostServlet extends HttpServlet {
 			throws IOException, ServletException {
 
 		HttpSession session = request.getSession();
-		List<String> messages = new ArrayList<String>();
+		List<String> errorMessages = new ArrayList<String>();
 		Users loginUser = (Users) session.getAttribute("loginUser");
 		Messages post = new Messages();
 		post.setTitle(request.getParameter("title"));
 		post.setText(request.getParameter("text"));
 		post.setCategory(request.getParameter("category"));
-		post.setId(loginUser.getId());
+		post.setUserId(loginUser.getId());
 
-		if (isValid(request, messages) == true) {
+
+
+		if (isValid(request, errorMessages) == true) {
 			new MessageService().register(post);
-			response.sendRedirect("./");
+
+			List<UsersMessages> messages = new MessageService().getMessages();
+			List<UsersComments> comments = new CommentService().getComments();
+			request.setAttribute("messages", messages);
+			request.setAttribute("comments", comments);
+
+			request.getRequestDispatcher("/home.jsp").forward(request, response);
 
 		} else {
-			session.setAttribute("errorMessages", messages);
+			session.setAttribute("errorMessages", errorMessages);
 			request.setAttribute("post", post);
 			request.getRequestDispatcher("/newPost.jsp").forward(request, response);
 		}
 	}
 
-	private boolean isValid(HttpServletRequest request, List<String> messages) {
+	private boolean isValid(HttpServletRequest request, List<String> errorMessages) {
 
 		String title = request.getParameter("title");
 		String text = request.getParameter("text");
 		String category = request.getParameter("category");
 
 		if (StringUtils.isEmpty(title) == true) {
-			messages.add("件名を入力してください");
+			errorMessages.add("件名を入力してください");
 		}
 		if (50 < title.length()) {
-			messages.add("50文字以下で入力してください");
+			errorMessages.add("50文字以下で入力してください");
 		}
 		if (StringUtils.isEmpty(text) == true) {
-			messages.add("本文を入力してください");
+			errorMessages.add("本文を入力してください");
 		}
 		if (1000 < text.length()) {
-			messages.add("1000文字以下で入力してください");
+			errorMessages.add("1000文字以下で入力してください");
 		}
 		if (StringUtils.isEmpty(category) == true) {
-			messages.add("カテゴリーを入力してください");
+			errorMessages.add("カテゴリーを入力してください");
 		}
 		if (10 < category.length()) {
-			messages.add("10文字以下で入力してください");
+			errorMessages.add("10文字以下で入力してください");
 		}
-		if (messages.size() == 0) {
+		if (errorMessages.size() == 0) {
 			return true;
 		} else {
 			return false;

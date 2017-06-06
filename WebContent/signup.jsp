@@ -12,11 +12,16 @@
 <body>
 <div class="main-contents">
 
+	<h2>■□　ユーザー新規登録画面　□■</h2><br />
+	<br />
+
 <c:if test="${ not empty loginUser }">
 <div class="profile">
 		<div class="name"><h3><c:out value="${loginUser.name}" />さんがログイン中です</h3></div>
 		</div>
 </c:if>
+<br />
+<br />
 
 <c:if test="${ not empty errorMessages }">
 	<div class="errorMessages">
@@ -29,21 +34,21 @@
 	<c:remove var="errorMessages" scope="session"/>
 </c:if>
 <form action="signup" method="post"><br />
-	<label for="login_id">ログインID</label>
+	<label for="login_id">ログインID</label>（半角英数字 6～20字以内）<br />
 	<input name="login_id" value="${user.loginId}" id="login_id"/><br />
-
-	<label for="password">パスワード</label>
+	<br />
+	<label for="password">パスワード</label>（半角英数字 6～255字以内）<br />
 	<input name="password"  type="password" id="password"/><br />
-
-	<label for="password2">パスワード（確認用）</label>
+	<br />
+	<label for="password2">パスワード（確認用）</label><br />
 	<input name="password2"  type="password" id="password2"/><br />
-
-	<label for="name">名称</label>
+	<br />
+	<label for="name">名称</label>（10字以下）<br />
 	<input name="name" value="${user.name}" type="text" id="name"/><br />
 
 
 	<p>
-	<label for="branch_id">支店</label>
+	<label for="branch_id">支店</label><br />
 	<select name="branch_id">
 	<c:forEach items="${branches}" var="branch">
 		<c:if test="${ branch.id == user.branchId }">
@@ -57,7 +62,7 @@
 	</p>
 
 	<p>
-	<label for="section_id">部署・役職</label>
+	<label for="section_id">部署・役職</label><br />
 	<select name="section_id">
 	<c:forEach items="${sections}" var="section">
 		<c:if test="${ section.id == user.sectionId }">

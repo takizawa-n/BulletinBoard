@@ -8,6 +8,7 @@ import java.util.List;
 
 import bulletinBoard.beans.Messages;
 import bulletinBoard.beans.UsersMessages;
+import bulletinBoard.dao.CommentsDao;
 import bulletinBoard.dao.MessagesDao;
 import bulletinBoard.dao.UsersMessagesDao;
 
@@ -48,6 +49,31 @@ public class MessageService {
 			commit(connection);
 
 			return ret;
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
+	//投稿（message）を削除したら、関連するコメントも削除。
+	public void delete(int id) {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+
+			MessagesDao messageDao = new MessagesDao();
+			messageDao.delete(connection, id);
+
+			CommentsDao commentDao = new CommentsDao();
+			commentDao.deleteWithMessage(connection, id);
+
+			commit(connection);
 		} catch (RuntimeException e) {
 			rollback(connection);
 			throw e;

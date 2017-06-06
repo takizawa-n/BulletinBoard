@@ -11,15 +11,13 @@
 </head>
 <body>
 <div class="main-contents">
-<c:if test="${ not empty loginUser }">
-<div class="profile">
-		<div class="name"><h3><c:out value="${loginUser.name}" />さんがログイン中です</h3></div>
-		</div>
-</c:if>
 
-	<h2>■□　新規投稿画面　□■</h2><br />
-	<br />
-	<br />
+
+<h2>■□　新規投稿画面　□■</h2><br />
+<br />
+<br />
+
+
 <c:if test="${ not empty errorMessages }">
 	<div class="errorMessages">
 		<ul>

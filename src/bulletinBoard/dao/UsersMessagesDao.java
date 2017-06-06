@@ -41,7 +41,7 @@ public class UsersMessagesDao {
 		List<UsersMessages> ret = new ArrayList<UsersMessages>();
 		try {
 			while (rs.next()) {
-				int id = rs.getInt("message_id");
+				int id = rs.getInt("id");
 				String title = rs.getString("title");
 				String text = rs.getString("text");
 				int userId = rs.getInt("user_id");
@@ -49,7 +49,7 @@ public class UsersMessagesDao {
 				Timestamp insertDate = rs.getTimestamp("insert_date");
 
 				UsersMessages message = new UsersMessages();
-				message.setMessageId(id);
+				message.setId(id);
 				message.setTitle(title);
 				message.setText(text);
 				message.setUserId(userId);

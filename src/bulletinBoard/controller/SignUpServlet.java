@@ -80,6 +80,7 @@ public class SignUpServlet extends HttpServlet {
 		String loginId = request.getParameter("login_id");
 		String password = request.getParameter("password");
 		String password2 = request.getParameter("password2");
+		String name = request.getParameter("name");
 
 		if (StringUtils.isEmpty(loginId) == true) {
 			messages.add("ログインIDを入力してください");
@@ -97,6 +98,9 @@ public class SignUpServlet extends HttpServlet {
 		}
 		if ( !password.equals(password2)) {
 			messages.add("パスワードとパスワード（確認用）は同じものを入力してください");
+		}
+		if ( name.length() >= 10) {
+			messages.add("名前は10文字以下で入力してください");
 		}
 		// TODO アカウントが既に利用されていないか、メールアドレスが既に登録されていないかなどの確認も必要
 		if (messages.size() == 0) {
