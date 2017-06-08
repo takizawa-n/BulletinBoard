@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bulletinBoard.beans.Categories;
 import bulletinBoard.beans.UsersComments;
 import bulletinBoard.beans.UsersMessages;
+import bulletinBoard.service.CategoryService;
 import bulletinBoard.service.CommentService;
 import bulletinBoard.service.MessageService;
 
@@ -23,19 +25,26 @@ import bulletinBoard.service.MessageService;
 		protected void doGet(HttpServletRequest request,
 				HttpServletResponse response) throws IOException, ServletException {
 
+			System.out.println("HomeServletのdoGetにきたよ");//■
 
 
 			List<UsersMessages> messages = new MessageService().getMessages();
 			List<UsersComments> comments = new CommentService().getComments();
+			List<Categories> categories = new CategoryService().getCategories();
 
-			System.out.println(messages.size());
-			System.out.println(comments.size());
-			System.out.println(comments.get(1).getMessageId());
+
+			System.out.println(messages.size());//■
+			System.out.println(comments.size());//■
+			System.out.println(categories.size());//■
 
 			request.setAttribute("messages", messages);
 			request.setAttribute("comments", comments);
+			request.setAttribute("categories", categories);
 
-			request.getRequestDispatcher("/home.jsp").forward(request, response);
+
+			System.out.println("HomeServletからhome.jspに飛ぶよ");//■
+
+			request.getRequestDispatcher("home.jsp").forward(request, response);
 
 		}
 

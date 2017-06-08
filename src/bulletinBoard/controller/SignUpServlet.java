@@ -38,6 +38,7 @@ public class SignUpServlet extends HttpServlet {
 		request.setAttribute("branches", branches);
 		request.setAttribute("sections", sections);
 
+
 		request.getRequestDispatcher("signup.jsp").forward(request, response);
 	}
 
@@ -56,9 +57,8 @@ public class SignUpServlet extends HttpServlet {
 		user.setIsWorking(1);
 
 		if (isValid(request, messages) == true) {
-
 			new UserService().register(user);
-			response.sendRedirect("./");
+			response.sendRedirect("manage");
 		} else {
 			List<Branches> branches = new BranchService().getBranches();
 			List<Sections> sections = new SectionService().getSections();
@@ -82,27 +82,32 @@ public class SignUpServlet extends HttpServlet {
 		String password2 = request.getParameter("password2");
 		String name = request.getParameter("name");
 
+		boolean checkLoginId = new UserService().checkLoginId(loginId);
+
 		if (StringUtils.isEmpty(loginId) == true) {
 			messages.add("ログインIDを入力してください");
 		} else if (loginId.length() < 6 || 20 < loginId.length()) {
 			messages.add("ログインIDは6～20文字以内で入力してください");
+		} else if (checkLoginId != true){
+			messages.add("このログインIDはすでに利用されています");
 		}
-		if (password.length() < 6 || 255 < password.length()) {
-			messages.add("パスワードは6～255文字以内で入力してください");
-		}
+
 		if (StringUtils.isEmpty(password) == true) {
 			messages.add("パスワードを入力してください");
-		}
-		if (StringUtils.isEmpty(password2) == true) {
+		} else if (password.length() < 6 || 255 < password.length()) {
+			messages.add("パスワードは6～255文字以内で入力してください");
+		} else if (StringUtils.isEmpty(password2) == true) {
 			messages.add("パスワード（確認用）を入力してください");
-		}
-		if ( !password.equals(password2)) {
+		} else if ( !password.equals(password2)) {
 			messages.add("パスワードとパスワード（確認用）は同じものを入力してください");
 		}
-		if ( name.length() >= 10) {
+
+		if (StringUtils.isEmpty(name) == true) {
+			messages.add("パスワードを入力してください");
+		} else if (name.length() > 10) {
 			messages.add("名前は10文字以下で入力してください");
 		}
-		// TODO アカウントが既に利用されていないか、メールアドレスが既に登録されていないかなどの確認も必要
+
 		if (messages.size() == 0) {
 			return true;
 		} else {

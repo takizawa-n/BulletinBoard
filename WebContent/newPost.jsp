@@ -7,17 +7,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>新規投稿</title>
-<link href="./css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="main-contents">
 
-
 <h2>■□　新規投稿画面　□■</h2><br />
 <br />
-<br />
-
-
 <c:if test="${ not empty errorMessages }">
 	<div class="errorMessages">
 		<ul>
@@ -28,8 +23,9 @@
 	</div>
 	<c:remove var="errorMessages" scope="session"/>
 </c:if>
+
 <form action="newPost" method="post"><br />
-	<label for="title">件名(1～50文字)</label><br />
+	<label for="title">タイトル(1～50文字)</label><br />
 	<input name="title" value="${post.title}" id="title" /><br />
 	<br />
 	 <br />
@@ -39,13 +35,34 @@
 	 <br />
 	  <br />
 
-	<label for="category">カテゴリー(1～10文字)</label><br />
-	 <input name="category" value="${post.category}" id="category" /><br />
+	<p>
+	<label for="category">カテゴリー</label><br />
+	<select name="category">
+		<option value="new"> 新しくカテゴリーを入力する→</option>
+		<c:forEach items="${categories}" var="category">
+			<c:if test="${ category.name != post.category }">
+				<option value="${category.name}" ><c:out value="${category.name}"></c:out></option>
+			</c:if>
+			<c:if test="${ category.name == post.category }">
+				<option value="${category.name}" selected ><c:out value="${category.name}"></c:out></option>
+			</c:if>
+		</c:forEach>
+	</select>
+	<input name="newCategory" value="${post.category}" id="category" />(1～10文字)
+
+	 <br />
+	  <br />
 	 <br />
 	  <br />
 
-	<input type="submit" value="投稿する" /> <br />
-	<a href="./">戻る</a>
+	<input type="submit" value="投稿する" />
+	<br />
+	 <br />
+	  <br />
+	  <br />
+	  <br />
+
+	<a href="./">HOME</a>
 </form>
 
 <div class="copyright">Copyright(c)Naoko Takizawa</div>

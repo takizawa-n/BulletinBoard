@@ -22,12 +22,17 @@ public class LoginServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException {
 
+		System.out.println("LoginServletにdoGetだよ。これからlogin.jspにとぶよ");//■
+
 		request.getRequestDispatcher("/login.jsp").forward(request, response);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException {
+
+		System.out.println("LoginServletにdoPostにきたよ");//■
+
 
 		String loginId = request.getParameter("loginId");
 		String password = request.getParameter("password");
@@ -38,6 +43,8 @@ public class LoginServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		if (user != null) {
 			session.setAttribute("loginUser", user);
+
+			System.out.println("Loginに成功。home.jspにとぶよ（LoginServlet/doPost)");//■
 			response.sendRedirect("./");
 		} else {
 			List<String> messages = new ArrayList<String>();

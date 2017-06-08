@@ -85,6 +85,7 @@ public class UserService {
 		}
 	}
 
+
 	public Users getUser(int userId) {
 
 		Connection connection = null;
@@ -107,6 +108,31 @@ public class UserService {
 			close(connection);
 		}
 	}
+
+
+	public boolean checkLoginId(String loginId) {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+
+			UsersDao userDao = new UsersDao();
+			boolean checkLoginId = userDao.checkLoginId(connection, loginId);
+
+			commit(connection);
+
+			return checkLoginId;
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
 
 	private static final int LIMIT_NUM = 1000;
 
@@ -132,6 +158,7 @@ public class UserService {
 			close(connection);
 		}
 	}
+
 
 	public void delete(int id) {
 

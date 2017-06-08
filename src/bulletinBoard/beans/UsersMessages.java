@@ -7,10 +7,12 @@ public class UsersMessages implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int id;
+	private String category;
 	private String title;
 	private String text;
 	private int userId;
 	private String name;
+	private int branchId;
 	private Date insertDate;
 
 
@@ -20,6 +22,14 @@ public class UsersMessages implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public String getTitle() {
@@ -52,6 +62,14 @@ public class UsersMessages implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public int getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(int branchId) {
+		this.branchId = branchId;
 	}
 
 	public Date getInsertDate() {

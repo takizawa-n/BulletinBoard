@@ -1,4 +1,4 @@
-users_comments
+
 CREATE SCHEMA `bulletin board`;
 
 CREATE TABLE `bulletin board`.`users` (
@@ -55,6 +55,7 @@ CREATE VIEW `bulletin board`.`users_messages` AS
 		`bulletin board`.`messages`.`text` AS `text`,
         `bulletin board`.`users`.`id` AS `user_id`,
         `bulletin board`.`users`.`name` AS `name`,
+		`bulletin board`.`users`.`branch_id` AS `branch_id`,
 		`bulletin board`.`messages`.`insert_date` AS `insert_date`
     from
         (`bulletin board`.`users`
@@ -69,6 +70,7 @@ CREATE VIEW `bulletin board`.`users_comments` AS
 		`bulletin board`.`comments`.`id` AS `id`,
 		`bulletin board`.`users`.`id` AS `user_id`,
         `bulletin board`.`users`.`name` AS `name`,
+		`bulletin board`.`users`.`branch_id` AS `branch_id`,
 		`bulletin board`.`comments`.`message_id` AS `message_id`,
 		`bulletin board`.`comments`.`text` AS `text`,
 		`bulletin board`.`comments`.`insert_date` AS `insert_date`

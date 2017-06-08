@@ -42,18 +42,22 @@ public class UsersMessagesDao {
 		try {
 			while (rs.next()) {
 				int id = rs.getInt("id");
+				String category = rs.getString("category");
 				String title = rs.getString("title");
 				String text = rs.getString("text");
 				int userId = rs.getInt("user_id");
+				int branchId = rs.getInt("branch_id");
 				String name = rs.getString("name");
 				Timestamp insertDate = rs.getTimestamp("insert_date");
 
 				UsersMessages message = new UsersMessages();
 				message.setId(id);
+				message.setCategory(category);
 				message.setTitle(title);
 				message.setText(text);
 				message.setUserId(userId);
 				message.setName(name);
+				message.setBranchId(branchId);
 				message.setInsertDate(insertDate);
 
 				ret.add(message);

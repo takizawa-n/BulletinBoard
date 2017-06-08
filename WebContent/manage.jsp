@@ -9,7 +9,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>ユーザー管理画面</title>
-<link href="./css/style.css" rel="stylesheet" type="text/css">
 
 <script type="text/javascript">
 
@@ -51,31 +50,52 @@ function deleteUser(){
 <body>
 <div class="main-contents">
 
-<c:if test="${ not empty messages }">
-	<div class="messages">
-			<c:forEach items="${messages}" var="message">
-				<c:out value="${message}" />
-			</c:forEach>
-	</div>
-	<c:remove var="message" scope="session"/>
-</c:if>
+	<c:if test="${ not empty deleteMessages }">
+		<div class="deleteMessage">
+			<ul>
+				<c:forEach items="${deleteMessages}" var="deleteMessage">
+					<li><c:out value="${deleteMessage}" />
+				</c:forEach>
+			</ul>
+		</div>
+	<c:remove var="deleteMessage" scope="session"/>
+	</c:if>
+
+	<c:if test="${ not empty updateMessages }">
+		<div class="updateMessage">
+			<ul>
+				<c:forEach items="${updateMessages}" var="updateMessage">
+					<li><c:out value="${updateMessage}" />
+				</c:forEach>
+			</ul>
+		</div>
+	<c:remove var="updateMessage" scope="session"/>
+	</c:if>
+
+	<c:if test="${ not empty errorMessages }">
+		<div class="deleteMessage">
+			<ul>
+				<c:forEach items="${errorMessages}" var="errorMessage">
+					<li><c:out value="${errorMessage}" />
+				</c:forEach>
+			</ul>
+		</div>
+	<c:remove var="errorMessage" scope="session"/>
+	</c:if>
 
 <div class="header">
-	<h2>■□　ユーザー編集画面　□■</h2><br />
+	<h2>■□　ユーザー編集画面　□■</h2>
 	<br />
-	<br />
+	<c:if test="${ not empty loginUser }">
+		<div class="profile">
+			<div class="name"><h3><c:out value="${loginUser.name}" />さんがログイン中です</h3></div>
+		</div>
+	</c:if>
+<br />
+<br />
+
 	<a href="signup">新規登録</a>
 </div>
-<br />
-<c:if test="${ not empty loginUser }">
-<div class="profile">
-		<div class="name"><h3><c:out value="${loginUser.name}" />さんがログイン中です</h3></div>
-		</div>
-</c:if>
-<br />
-<br />
-
-
 <table border="5">
 <tr><th>ログインID</th><th>名称</th><th>●</th><th>停止/復活</th><th>●</th></tr>
 
@@ -83,9 +103,9 @@ function deleteUser(){
 <c:forEach items="${users}" var="user">
 <tr>
 	<td><c:out value="${user.loginId}"></c:out></td>
-	<td><c:out value="${user.name}"></c:out></td>
+	<td><c:out value="${user.name}"></c:out><c:out value="${user.id}"></c:out></td>
 	<td><form action="settings" method="get">
-			<input type="hidden" name="userId" value="${user.id}">
+			<input type="hidden" id = "userId" name="userId" value="${user.id}">
 			<input type="submit" value="編集" />
 		</form>
 	</td>
@@ -114,7 +134,7 @@ function deleteUser(){
 
 
 <br />
-<br />	<a href="./">ホームへもどる</a>
+<br />	<a href="./">HOME</a>
 <br />
 <br />
 <div class="copyright">Copyright(c)Naoko Takizawa</div>

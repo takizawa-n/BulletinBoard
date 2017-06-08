@@ -7,7 +7,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>ユーザー新規登録</title>
-	<link href="./css/style.css" rel="stylesheet" type="text/css">
+
 </head>
 <body>
 <div class="main-contents">
@@ -49,37 +49,36 @@
 
 	<p>
 	<label for="branch_id">支店</label><br />
-	<select name="branch_id">
-	<c:forEach items="${branches}" var="branch">
-		<c:if test="${ branch.id == user.branchId }">
-		<option value="${branch.id}" selected><c:out value="${branch.name}"></c:out></option>
-		</c:if>
-		<c:if test="${ branch.id != user.branchId }">
-		<option value="${branch.id}"><c:out value="${branch.name}"></c:out></option>
-		</c:if>
-	</c:forEach>
-	</select>
+		<select name="branch_id">
+			<c:forEach items="${branches}" var="branch">
+				<c:if test="${ branch.id == user.branchId }">
+					<option value="${branch.id}" selected><c:out value="${branch.name}"></c:out></option>
+				</c:if>
+				<c:if test="${ branch.id != user.branchId }">
+					<option value="${branch.id}"><c:out value="${branch.name}"></c:out></option>
+				</c:if>
+			</c:forEach>
+		</select>
 	</p>
 
 	<p>
 	<label for="section_id">部署・役職</label><br />
-	<select name="section_id">
-	<c:forEach items="${sections}" var="section">
-		<c:if test="${ section.id == user.sectionId }">
-		<option value="${section.id}" selected><c:out value="${section.name}"></c:out></option>
-		</c:if>
-		<c:if test="${section.id != user.sectionId }">
-		<option value="${section.id}"><c:out value="${section.name}"></c:out></option>
-		</c:if>
-
-	</c:forEach>
-	</select>
-	<br />
+		<select name="section_id">
+			<c:forEach items="${sections}" var="section">
+				<c:if test="${ section.id == user.sectionId }">
+					<option value="${section.id}" selected><c:out value="${section.name}"></c:out></option>
+				</c:if>
+				<c:if test="${section.id != user.sectionId }">
+					<option value="${section.id}"><c:out value="${section.name}"></c:out></option>
+				</c:if>
+			</c:forEach>
+		</select>
 	</p>
 
 
 	<input type="submit" value="登録" /> <br />
-	<a href="./">戻る</a>
+	<a href="manage">ユーザー管理画面</a>
+	<a href="./">HOME</a>
 </form>
 <div class="copyright">Copyright(c)Naoko Takizawa</div>
 </div>
