@@ -7,6 +7,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>新規投稿</title>
+
+
+
 </head>
 <body>
 <div class="main-contents">
@@ -24,7 +27,7 @@
 	<c:remove var="errorMessages" scope="session"/>
 </c:if>
 
-<form action="newPost" method="post"><br />
+<form name="newPostForm" action="newPost" method="post"><br />
 	<label for="title">タイトル(1～50文字)</label><br />
 	<input name="title" value="${post.title}" id="title" /><br />
 	<br />
@@ -55,7 +58,8 @@
 	 <br />
 	  <br />
 
-	<input type="submit" value="投稿する" />
+	<input type="submit" value="投稿する">
+</form>
 	<br />
 	 <br />
 	  <br />
@@ -63,7 +67,7 @@
 	  <br />
 
 	<a href="./">HOME</a>
-</form>
+
 
 <div class="copyright">Copyright(c)Naoko Takizawa</div>
 </div>

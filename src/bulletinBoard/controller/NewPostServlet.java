@@ -73,7 +73,7 @@ public class NewPostServlet extends HttpServlet {
 			}
 
 			if(!newCategory.isEmpty()){
-				post.setCategory("newCategory");//postに新規のカテゴリー
+				post.setCategory(newCategory);//postに新規のカテゴリー
 				Categories insertCategory = new Categories();
 				insertCategory.setName(newCategory);
 				new CategoryService().register(insertCategory);//新規カテゴリーをDBに登録

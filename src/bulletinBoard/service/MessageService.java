@@ -35,6 +35,78 @@ public class MessageService {
 		}
 	}
 
+	//投稿（message）を削除したら、関連するコメントも削除。
+	public void delete(int id) {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+
+			MessagesDao messageDao = new MessagesDao();
+			messageDao.delete(connection, id);
+
+			CommentsDao commentDao = new CommentsDao();
+			commentDao.deleteWithMessage(connection, id);
+
+			commit(connection);
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
+	public List<UsersMessages> getSortedWithCategory(String startDate, String endDate, String category) {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+
+			UsersMessagesDao usersMessageDao = new UsersMessagesDao();
+			List<UsersMessages> ret = usersMessageDao.getSortedWithCategory(connection, startDate, endDate, category);
+
+			commit(connection);
+
+			return ret;
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
+	public List<UsersMessages> getSortedOnlyDate(String startDate, String endDate) {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+
+			UsersMessagesDao usersMessageDao = new UsersMessagesDao();
+			List<UsersMessages> ret = usersMessageDao.getSortedOnlyDate(connection, startDate, endDate);
+
+			commit(connection);
+
+			return ret;
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
+
 	private static final int LIMIT_NUM = 1000;
 
 	public List<UsersMessages> getMessages() {
@@ -60,28 +132,5 @@ public class MessageService {
 		}
 	}
 
-	//投稿（message）を削除したら、関連するコメントも削除。
-	public void delete(int id) {
 
-		Connection connection = null;
-		try {
-			connection = getConnection();
-
-			MessagesDao messageDao = new MessagesDao();
-			messageDao.delete(connection, id);
-
-			CommentsDao commentDao = new CommentsDao();
-			commentDao.deleteWithMessage(connection, id);
-
-			commit(connection);
-		} catch (RuntimeException e) {
-			rollback(connection);
-			throw e;
-		} catch (Error e) {
-			rollback(connection);
-			throw e;
-		} finally {
-			close(connection);
-		}
-	}
 }

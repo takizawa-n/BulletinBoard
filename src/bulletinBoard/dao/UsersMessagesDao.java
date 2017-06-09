@@ -25,6 +25,7 @@ public class UsersMessagesDao {
 
 			ps = connection.prepareStatement(sql.toString());
 
+
 			ResultSet rs = ps.executeQuery();
 			List<UsersMessages> ret = toUserMessageList(rs);
 			return ret;
@@ -41,7 +42,7 @@ public class UsersMessagesDao {
 		List<UsersMessages> ret = new ArrayList<UsersMessages>();
 		try {
 			while (rs.next()) {
-				int id = rs.getInt("id");
+				int id = rs.getInt("id"); //messageId
 				String category = rs.getString("category");
 				String title = rs.getString("title");
 				String text = rs.getString("text");
@@ -65,6 +66,66 @@ public class UsersMessagesDao {
 			return ret;
 		} finally {
 			close(rs);
+		}
+	}
+
+
+	//しぼりこみ機能、カテゴリーかつ日時（日時指定なしも可能）の場合
+	public List<UsersMessages> getSortedWithCategory(Connection connection, String startDate, String endDate, String category) {
+
+
+		PreparedStatement ps = null;
+		try {
+			StringBuilder sql = new StringBuilder();
+			//StartDate＋1日する。
+			sql.append("SELECT * FROM users_messages");
+			sql.append(" WHERE insert_date BETWEEN ? AND ? ");
+			sql.append(", category = ?");
+			sql.append(" ORDER BY insert_date ");
+
+
+
+			ps = connection.prepareStatement(sql.toString());
+			ps.setString(1, startDate);
+			ps.setString(2, endDate);
+			ps.setString(3, category);
+
+			System.out.println(ps);//■
+
+			ResultSet rs = ps.executeQuery();
+			List<UsersMessages> ret = toUserMessageList(rs);
+			return ret;
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
+
+	//しぼりこみ機能、カテゴリーなしの場合
+	public List<UsersMessages> getSortedOnlyDate(Connection connection, String startDate, String endDate) {
+
+		PreparedStatement ps = null;
+		try {
+			StringBuilder sql = new StringBuilder();
+			//StartDate＋1日する。
+			sql.append("SELECT * FROM users_messages");
+			sql.append(" WHERE insert_date BETWEEN ? AND ?");
+			sql.append(" ORDER BY insert_date ");
+
+			System.out.println(sql.toString());//■
+
+			ps = connection.prepareStatement(sql.toString());
+			ps.setString(1, startDate);
+			ps.setString(2, endDate);
+
+			ResultSet rs = ps.executeQuery();
+			List<UsersMessages> ret = toUserMessageList(rs);
+			return ret;
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
 		}
 	}
 

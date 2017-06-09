@@ -6,6 +6,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js"></script>
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/redmond/jquery-ui.css" >
+
+
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>掲示板</title>
 
@@ -27,6 +33,25 @@ function deleteComment(){
 		return false;
 	}
 }
+
+
+$(function () {
+
+	$("#datepicker").datepicker({
+		maxDate: "0y"
+	});
+
+	$("#datepicker").change(function(){
+		alert($("#datepicker").val());
+
+		$("#datepicker2").datepicker("option","minDate",$("#datepicker").val())
+	})
+
+	$("#datepicker2").datepicker({
+		maxDate: "0y"
+	});
+});
+
 
 </script>
 
@@ -77,6 +102,36 @@ function deleteComment(){
 	</div>
 </c:if>
 
+
+<div class="sort">
+	<form name="sort" action="sort" method="post"><br />
+		【　投稿絞り込み機能　】<br />
+		<label for="date">日付</label><br />
+		<input name="startDate" type="text" id="datepicker" value="${startDate}" >　～　<input name="endDate" type="text" id="datepicker2" value="${endDate}">
+		<br />
+		<label for="category">カテゴリー</label><br />
+		<select name="category">
+			<option value=""> 未選択</option>
+			<c:forEach items="${categories}" var="category">
+				<c:if test="${ category.name != category }">
+					<option value="${category.name}" ><c:out value="${category.name}"></c:out></option>
+				</c:if>
+				<c:if test="${ category.name == category }">
+					<option value="${category.name}" selected ><c:out value="${category.name}"></c:out></option>
+				</c:if>
+			</c:forEach>
+		</select>
+		<br />
+		<input type="submit" value="しぼりこむ">
+	</form>
+
+
+</div>
+
+
+
+
+
 	<div class="messages">
 		<c:forEach items="${messages}" var="message">
 			<div class="message">
@@ -118,7 +173,7 @@ function deleteComment(){
 						<div class="comment">
 							<div class="name">From：<c:out value="${comment.name}" />さん</div>
 							<div class="text"><c:out value="${comment.text}" /></div>
-							<div class="insertDate"><c:out value="${comment.insertDate}" />に投稿</div>
+							(投稿日時  <div class="insertDate"><fmt:formatDate value="${comment.insertDate}" pattern="yyyy/MM/dd HH:mm:ss" /></div>)
 							<c:if test="${(loginUser.sectionId == 2) || (loginUser.id == comment.userId) ||
 										((loginUser.sectionId == 3) && (loginUser.branchId == comment.branchId)) ||
 													(loginUser.id == comment.userId)}">
