@@ -17,23 +17,15 @@
 
 <script type="text/javascript">
 
-function deleteMessage(){
-	if(window.confirm('このメッセージを本当に削除しますか？')){
-		return true;
-	}else{
-		window.alert('キャンセルされました');
-		return false;
-	}
-}
-function deleteComment(){
-	if(window.confirm('このコメントを本当に削除しますか？')){
-		return true;
-	}else{
-		window.alert('キャンセルされました');
-		return false;
-	}
-}
 
+function logout(){
+	if(window.confirm('本当にログアウトしますか？')){
+		return true;
+	}else{
+		window.alert('キャンセルされました');
+		return false;
+	}
+}
 
 $(function () {
 
@@ -52,6 +44,23 @@ $(function () {
 	});
 });
 
+function deletePost(){
+	if(window.confirm('このメッセージを本当に削除しますか？')){
+		return true;
+	}else{
+		window.alert('キャンセルされました');
+		return false;
+	}
+}
+function deleteComment(){
+	if(window.confirm('このコメントを本当に削除しますか？')){
+		return true;
+	}else{
+		window.alert('キャンセルされました');
+		return false;
+	}
+}
+
 
 </script>
 
@@ -60,7 +69,7 @@ $(function () {
 </head>
 <body>
 <div class="main-contents">
-<a href="logout">ログアウト</a>
+<a href="logout" onClick="return logout();">ログアウト</a>
 <div class="header">
 	<c:if test="${ not empty deleteMessages }">
 		<div class="deleteMessage">
@@ -104,27 +113,30 @@ $(function () {
 
 
 <div class="sort">
-	<form name="sort" action="sort" method="post"><br />
+	<form name="sort" action="./" method="get"><br />
 		【　投稿絞り込み機能　】<br />
 		<label for="date">日付</label><br />
-		<input name="startDate" type="text" id="datepicker" value="${startDate}" >　～　<input name="endDate" type="text" id="datepicker2" value="${endDate}">
+		<input name="startDate" type="text" id="datepicker" value="${startDate}" readonly>　
+				～　<input name="endDate" type="text" id="datepicker2" value="${endDate}" readonly>
 		<br />
 		<label for="category">カテゴリー</label><br />
 		<select name="category">
-			<option value=""> 未選択</option>
+			<option value="all"> すべて</option>
 			<c:forEach items="${categories}" var="category">
-				<c:if test="${ category.name != category }">
+				<c:if test="${ category.name != selectedCategory }">
 					<option value="${category.name}" ><c:out value="${category.name}"></c:out></option>
 				</c:if>
-				<c:if test="${ category.name == category }">
+				<c:if test="${ category.name == selectedCategory }">
 					<option value="${category.name}" selected ><c:out value="${category.name}"></c:out></option>
 				</c:if>
 			</c:forEach>
 		</select>
 		<br />
 		<input type="submit" value="しぼりこむ">
+		<input type="reset" value="入力を取り消す">
 	</form>
-
+	<br />
+	<input type="button" onclick="location.href='./'" value="すべてを表示する">
 
 </div>
 
@@ -132,26 +144,45 @@ $(function () {
 
 
 
-	<div class="messages">
-		<c:forEach items="${messages}" var="message">
-			<div class="message">
+
+<c:if test="${ not empty resultMessages }">
+	<div class="resultMessage">
+		<ul>
+			<c:forEach items="${resultMessages}" var="resultMessage">
+				<li><c:out value="${resultMessage}" />
+			</c:forEach>
+		</ul>
+	</div>
+	<c:remove var="resultMessages" scope="session"/>
+</c:if>
+
+
+	<div class="posts">
+		<c:forEach items="${posts}" var="post">
+			<div class="post">
 			<br />
 			<br />
 				<div class="user-name">
-					投稿No.<span class="id"><c:out value="${message.id}" /></span><br />
-					投稿者：<span class="name"><c:out value="${message.name}" /></span><br />
-					カテゴリー：<span class="cateory"><c:out value="${message.category}" /></span>
+					投稿No.<span class="id"><c:out value="${post.id}" /></span><br />
+					投稿者：<span class="name"><c:out value="${post.name}" /></span><br />
+					カテゴリー：<span class="category"><c:out value="${post.category}" /></span>
 				</div>
-					★件名<div class="tiltle"><c:out value="${message.title}" /></div>
-					★本文<div class="text"><c:out value="${message.text}" /></div>
-					(投稿日時  <span class="date"><fmt:formatDate value="${message.insertDate}" pattern="yyyy/MM/dd HH:mm:ss" /></span>)
+					★件名<div class="tiltle"><c:out value="${post.title}" /></div>
+					★本文<div class="text">
+							<c:forTokens var="obj" items="${post.text}" delims="
+							">
+								<c:out value="${obj}"/><br>
+							</c:forTokens>
+							<br>
+					</div>
+					(投稿日時  <span class="date"><fmt:formatDate value="${post.insertDate}" pattern="yyyy/MM/dd HH:mm:ss" /></span>)
 
-				<c:if test="${(loginUser.sectionId == 2) || (loginUser.id == message.userId) ||
-							((loginUser.sectionId == 3) && (loginUser.branchId == message.branchId)) ||
-										(loginUser.id == message.userId)}">
-					<form action="deleteMessage" method="post" >
-						<input type="hidden" name="id" value="${message.id}">
-						<p><input type="submit" value="削除する" onClick="return deleteMessage();"></p>
+				<c:if test="${(loginUser.sectionId == 2) || (loginUser.id == post.userId) ||
+							((loginUser.sectionId == 3) && (loginUser.branchId == post.branchId)) ||
+										(loginUser.id == post.userId)}">
+					<form action="deletePost" method="post" >
+						<input type="hidden" name="id" value="${post.id}">
+						<p><input type="submit" value="削除する" onClick="return deletePost();"></p>
 					</form>
 				</c:if>
 			</div>
@@ -159,7 +190,7 @@ $(function () {
 			<br />
 
 			<form action="comment" method="post"><br />
-				<input type="hidden" name="messageId" value="${message.id}">
+				<input type="hidden" name="postId" value="${post.id}">
 				<label for="本文">この投稿にコメントする</label><br />
 				<textarea name="text"  cols="35" rows="5" id="text"><c:out value="${comment.text}" /></textarea><br />
 				<input type="submit" value="コメントを送信" />(500文字以内)<br />
@@ -167,25 +198,35 @@ $(function () {
 			</form>
 
 
-				▼　投稿No.<c:out value="${message.id}" />（<c:out value="${message.name}" />さん）へのコメント
-				<c:forEach items="${comments}" var="comment">
-					<c:if test="${comment.messageId == message.id}">
-						<div class="comment">
-							<div class="name">From：<c:out value="${comment.name}" />さん</div>
-							<div class="text"><c:out value="${comment.text}" /></div>
-							(投稿日時  <div class="insertDate"><fmt:formatDate value="${comment.insertDate}" pattern="yyyy/MM/dd HH:mm:ss" /></div>)
-							<c:if test="${(loginUser.sectionId == 2) || (loginUser.id == comment.userId) ||
-										((loginUser.sectionId == 3) && (loginUser.branchId == comment.branchId)) ||
-													(loginUser.id == comment.userId)}">
-								<form action="deleteComment" method="post" >
-									<input type="hidden" name="id" value="${comment.id}">
-									<p><input type="submit" value="削除する" onClick="return deleteComment();"></p>
-								</form>
-							</c:if>
-							===================
-						</div>
-					</c:if>
-				</c:forEach>
+				▼　投稿No.<c:out value="${post.id}" />（<c:out value="${post.name}" />さん）へのコメント欄
+				<br>
+					<c:forEach items="${comments}" var="comment">
+						<c:if test="${comment.postId == post.id}">
+							<div class="comment">
+								<div class="name">From：<c:out value="${comment.name}" />さん</div>
+								<div class="text">
+									<c:forTokens var="obj" items="${comment.text}" delims="
+									">
+										<c:out value="${obj}"/><br>
+									</c:forTokens>
+									<br>
+								</div>
+								<div class="insertDate">
+									(投稿日時  <fmt:formatDate value="${comment.insertDate}" pattern="yyyy/MM/dd HH:mm:ss" />）</div>
+
+								<c:if test="${(loginUser.sectionId == 2) || (loginUser.id == comment.userId) ||
+											((loginUser.sectionId == 3) && (loginUser.branchId == comment.branchId)) ||
+														(loginUser.id == comment.userId)}">
+									<form action="deleteComment" method="post" >
+										<input type="hidden" name="id" value="${comment.id}">
+										<p><input type="submit" value="削除する" onClick="return deleteComment();"></p>
+									</form>
+								</c:if>
+								<br>
+								===================
+							</div>
+						</c:if>
+					</c:forEach>
 
 
 			<br />

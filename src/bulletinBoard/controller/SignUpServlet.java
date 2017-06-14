@@ -14,9 +14,9 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 
-import bulletinBoard.beans.Branches;
-import bulletinBoard.beans.Sections;
-import bulletinBoard.beans.Users;
+import bulletinBoard.beans.Branch;
+import bulletinBoard.beans.Section;
+import bulletinBoard.beans.User;
 import bulletinBoard.service.BranchService;
 import bulletinBoard.service.SectionService;
 import bulletinBoard.service.UserService;
@@ -29,8 +29,8 @@ public class SignUpServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException {
 
-		List<Branches> branches = new BranchService().getBranches();
-		List<Sections> sections = new SectionService().getSections();
+		List<Branch> branches = new BranchService().getBranches();
+		List<Section> sections = new SectionService().getSections();
 
 		System.out.println(branches.size());
 		System.out.println(sections.size());
@@ -48,7 +48,7 @@ public class SignUpServlet extends HttpServlet {
 
 		List<String> messages = new ArrayList<String>();
 		HttpSession session = request.getSession();
-		Users user = new Users();
+		User user = new User();
 		user.setLoginId(request.getParameter("login_id"));
 		user.setPassword(request.getParameter("password"));
 		user.setName(request.getParameter("name"));
@@ -60,8 +60,8 @@ public class SignUpServlet extends HttpServlet {
 			new UserService().register(user);
 			response.sendRedirect("manage");
 		} else {
-			List<Branches> branches = new BranchService().getBranches();
-			List<Sections> sections = new SectionService().getSections();
+			List<Branch> branches = new BranchService().getBranches();
+			List<Section> sections = new SectionService().getSections();
 
 			System.out.println(branches.size());
 			System.out.println(sections.size());
@@ -82,27 +82,27 @@ public class SignUpServlet extends HttpServlet {
 		String password2 = request.getParameter("password2");
 		String name = request.getParameter("name");
 
-		boolean checkLoginId = new UserService().checkLoginId(loginId);
+		boolean isUsed = new UserService().IsUsed(loginId);
 
-		if (StringUtils.isEmpty(loginId) == true) {
+		if (StringUtils.isBlank(loginId) == true) {
 			messages.add("ログインIDを入力してください");
 		} else if (loginId.length() < 6 || 20 < loginId.length()) {
 			messages.add("ログインIDは6～20文字以内で入力してください");
-		} else if (checkLoginId != true){
+		} else if (isUsed == true){
 			messages.add("このログインIDはすでに利用されています");
 		}
 
-		if (StringUtils.isEmpty(password) == true) {
+		if (StringUtils.isBlank(password) == true) {
 			messages.add("パスワードを入力してください");
 		} else if (password.length() < 6 || 255 < password.length()) {
 			messages.add("パスワードは6～255文字以内で入力してください");
-		} else if (StringUtils.isEmpty(password2) == true) {
+		} else if (StringUtils.isBlank(password2) == true) {
 			messages.add("パスワード（確認用）を入力してください");
 		} else if ( !password.equals(password2)) {
 			messages.add("パスワードとパスワード（確認用）は同じものを入力してください");
 		}
 
-		if (StringUtils.isEmpty(name) == true) {
+		if (StringUtils.isBlank(name) == true) {
 			messages.add("パスワードを入力してください");
 		} else if (name.length() > 10) {
 			messages.add("名前は10文字以下で入力してください");

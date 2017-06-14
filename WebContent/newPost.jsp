@@ -51,7 +51,7 @@
 			</c:if>
 		</c:forEach>
 	</select>
-	<input name="newCategory" value="${post.category}" id="category" />(1～10文字)
+	<input name="newCategory" value="${post.newCategory}" id="category" />(1～10文字)
 
 	 <br />
 	  <br />

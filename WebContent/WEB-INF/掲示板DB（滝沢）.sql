@@ -15,7 +15,7 @@ CREATE TABLE `bulletin board`.`users` (
 
 
 
-CREATE TABLE `bulletin board`.`messages` (
+CREATE TABLE `bulletin board`.`posts` (
  `id` INT NOT NULL AUTO_INCREMENT ,
  `user_id` INT NOT NULL ,
  `title` VARCHAR(50) NOT NULL ,
@@ -28,9 +28,9 @@ PRIMARY KEY (`id`) );
 CREATE TABLE `bulletin board`.`comments` (
  `id` INT NOT NULL AUTO_INCREMENT ,
  `user_id` INT NOT NULL ,
- `message_id` INT NOT NULL ,
+ `post_id` INT NOT NULL ,
  `text` VARCHAR(500) NOT NULL ,
- `insert_date` TIMESTAMP NOT NULL ,sections
+ `insert_date` TIMESTAMP NOT NULL ,
  `update_date` TIMESTAMP NOT NULL ,
  PRIMARY KEY (`id`) );
 
@@ -48,21 +48,21 @@ CREATE  TABLE `bulletin board`.`sections` (
 
 
 
-CREATE VIEW `bulletin board`.`users_messages` AS
+CREATE VIEW `bulletin board`.`users_posts` AS
     (select 
-		`bulletin board`.`messages`.`id` AS `id`,
-        `bulletin board`.`messages`.`title` AS `title`,
-		`bulletin board`.`messages`.`text` AS `text`,
+		`bulletin board`.`posts`.`id` AS `id`,
+        `bulletin board`.`posts`.`title` AS `title`,
+		`bulletin board`.`posts`.`text` AS `text`,
         `bulletin board`.`users`.`id` AS `user_id`,
         `bulletin board`.`users`.`name` AS `name`,
 		`bulletin board`.`users`.`branch_id` AS `branch_id`,
-		`bulletin board`.`messages`.`insert_date` AS `insert_date`
+		`bulletin board`.`posts`.`insert_date` AS `insert_date`
     from
         (`bulletin board`.`users`
-        join `bulletin board`.`messages`)
+        join `bulletin board`.`posts`)
     where
-        (`bulletin board`.`users`.`id` = `bulletin board`.`messages`.`user_id`)
-    order by `bulletin board`.`messages`.`insert_date`);
+        (`bulletin board`.`users`.`id` = `bulletin board`.`posts`.`user_id`)
+    order by `bulletin board`.`posts`.`insert_date`);
 
 
 CREATE VIEW `bulletin board`.`users_comments` AS
@@ -71,7 +71,7 @@ CREATE VIEW `bulletin board`.`users_comments` AS
 		`bulletin board`.`users`.`id` AS `user_id`,
         `bulletin board`.`users`.`name` AS `name`,
 		`bulletin board`.`users`.`branch_id` AS `branch_id`,
-		`bulletin board`.`comments`.`message_id` AS `message_id`,
+		`bulletin board`.`comments`.`post_id` AS `post_id`,
 		`bulletin board`.`comments`.`text` AS `text`,
 		`bulletin board`.`comments`.`insert_date` AS `insert_date`
     from

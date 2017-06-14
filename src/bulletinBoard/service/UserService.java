@@ -7,13 +7,13 @@ import static bulletinBoard.utils.DBUtil.*;
 import java.sql.Connection;
 import java.util.List;
 
-import bulletinBoard.beans.Users;
-import bulletinBoard.dao.UsersDao;
+import bulletinBoard.beans.User;
+import bulletinBoard.dao.UserDao;
 import bulletinBoard.utils.CipherUtil;
 
 public class UserService {
 
-	public void register(Users user) {
+	public void register(User user) {
 
 		Connection connection = null;
 		try {
@@ -23,7 +23,7 @@ public class UserService {
 			user.setPassword(encPassword);
 
 
-			UsersDao userDao = new UsersDao();
+			UserDao userDao = new UserDao();
 			userDao.insert(connection, user);
 
 			commit(connection);
@@ -39,7 +39,7 @@ public class UserService {
 	}
 
 
-	public void update(Users user) {
+	public void update(User user) {
 
 		Connection connection = null;
 		try {
@@ -48,7 +48,7 @@ public class UserService {
 			String encPassword = CipherUtil.encrypt(user.getPassword());
 			user.setPassword(encPassword);
 
-			UsersDao userDao = new UsersDao();
+			UserDao userDao = new UserDao();
 			userDao.update(connection, user);
 
 			commit(connection);
@@ -70,7 +70,7 @@ public class UserService {
 		try {
 			connection = getConnection();
 
-			UsersDao userDao = new UsersDao();
+			UserDao userDao = new UserDao();
 			userDao.updateIsWorking(connection, id, isWorking);
 
 			commit(connection);
@@ -86,14 +86,14 @@ public class UserService {
 	}
 
 
-	public Users getUser(int userId) {
+	public User getUser(int userId) {
 
 		Connection connection = null;
 		try {
 			connection = getConnection();
 
-			UsersDao userDao = new UsersDao();
-			Users user = userDao.getUser(connection, userId);
+			UserDao userDao = new UserDao();
+			User user = userDao.getUser(connection, userId);
 
 			commit(connection);
 
@@ -110,14 +110,14 @@ public class UserService {
 	}
 
 
-	public boolean checkLoginId(String loginId) {
+	public boolean IsUsed(String loginId) {
 
 		Connection connection = null;
 		try {
 			connection = getConnection();
 
-			UsersDao userDao = new UsersDao();
-			boolean checkLoginId = userDao.checkLoginId(connection, loginId);
+			UserDao userDao = new UserDao();
+			boolean checkLoginId = userDao.IsUsed(connection, loginId);
 
 			commit(connection);
 
@@ -133,17 +133,37 @@ public class UserService {
 		}
 	}
 
-
-	private static final int LIMIT_NUM = 1000;
-
-	public List<Users> getUsers() {
+	public void delete(int id) {
 
 		Connection connection = null;
 		try {
 			connection = getConnection();
 
-			UsersDao userDao = new UsersDao();
-			List<Users> ret = userDao.getUsers(connection, LIMIT_NUM);
+			UserDao userDao = new UserDao();
+			userDao.delete(connection, id);
+
+			commit(connection);
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
+	private static final int LIMIT_NUM = 1000;
+
+	public List<User> getUsers() {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+
+			UserDao userDao = new UserDao();
+			List<User> ret = userDao.getUsers(connection, LIMIT_NUM);
 
 			commit(connection);
 
@@ -160,25 +180,6 @@ public class UserService {
 	}
 
 
-	public void delete(int id) {
 
-		Connection connection = null;
-		try {
-			connection = getConnection();
-
-			UsersDao userDao = new UsersDao();
-			userDao.delete(connection, id);
-
-			commit(connection);
-		} catch (RuntimeException e) {
-			rollback(connection);
-			throw e;
-		} catch (Error e) {
-			rollback(connection);
-			throw e;
-		} finally {
-			close(connection);
-		}
-	}
 }
 

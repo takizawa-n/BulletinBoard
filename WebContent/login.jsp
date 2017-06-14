@@ -39,7 +39,7 @@
 
 <form action="login" method="post"><br />
 	<label for="loginId">ログインID</label>
-	<input name="loginId" value="${reqLoginId}" id="loginId"/><br />
+	<input name="loginId" value="${reqLoginId}" id="loginId"  /><br />
 	<label for="password">パスワード</label>
 	<input name="password" type="password" id="password"/><br />
 	<input type="submit" value="ログイン" /> <br />

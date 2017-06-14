@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import bulletinBoard.beans.Users;
+import bulletinBoard.beans.User;
 import bulletinBoard.service.LoginService;
 
 @WebServlet(urlPatterns = { "/login" })
@@ -38,7 +38,7 @@ public class LoginServlet extends HttpServlet {
 		String password = request.getParameter("password");
 
 		LoginService loginService = new LoginService();
-		Users user = loginService.login(loginId, password);
+		User user = loginService.login(loginId, password);
 
 		HttpSession session = request.getSession();
 		if (user != null) {

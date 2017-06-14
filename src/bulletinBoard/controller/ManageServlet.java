@@ -11,8 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import bulletinBoard.beans.Users;
+import bulletinBoard.beans.Branch;
+import bulletinBoard.beans.Section;
+import bulletinBoard.beans.User;
 import bulletinBoard.exception.NoRowsUpdatedRuntimeException;
+import bulletinBoard.service.BranchService;
+import bulletinBoard.service.SectionService;
 import bulletinBoard.service.UserService;
 
 
@@ -24,17 +28,23 @@ public class ManageServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException {
 
-		List<Users> users = new UserService().getUsers();
+		List<User> users = new UserService().getUsers();
+		List<Branch> branches = new BranchService().getBranches();
+		List<Section> sections = new SectionService().getSections();
 
-		System.out.println(users.size());//■will be deleted
+		System.out.println(users.size());//■
 
 		request.setAttribute("users", users);
+		request.setAttribute("branches", branches);
+		request.setAttribute("sections", sections);
 		request.getRequestDispatcher("/manage.jsp").forward(request, response);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException {
+
+		//もしもログインユーザーが自分を削除したり、アカウントの停止復活しようとしていたら、エラーを出す。
 
 		List<String> messages = new ArrayList<String>();
 		HttpSession session = request.getSession();

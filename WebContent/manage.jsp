@@ -14,7 +14,7 @@
 
 
 function toWorking(){
-	if(window.confirm('本当にいいんですね？')){
+	if(window.confirm('本当にこのアカウントを復活しますか？')){
 		return true;
 	}else{
 		window.alert('キャンセルされました');
@@ -22,7 +22,7 @@ function toWorking(){
 	}
 }
 function notToWorking(){
-	if(window.confirm('本当にいいんですね？')){
+	if(window.confirm('本当にこのアカウントを停止しますか？')){
 		return true;
 	}else{
 		window.alert('キャンセルされました');
@@ -31,7 +31,7 @@ function notToWorking(){
 }
 
 function deleteUser(){
-	if(window.confirm('本当に削除しますか？')){
+	if(window.confirm('本当にこのアカウントを削除しますか？')){
 		return true;
 	}else{
 		window.alert('キャンセルされました');
@@ -58,7 +58,7 @@ function deleteUser(){
 				</c:forEach>
 			</ul>
 		</div>
-	<c:remove var="deleteMessage" scope="session"/>
+	<c:remove var="deleteMessages" scope="session"/>
 	</c:if>
 
 	<c:if test="${ not empty updateMessages }">
@@ -69,7 +69,7 @@ function deleteUser(){
 				</c:forEach>
 			</ul>
 		</div>
-	<c:remove var="updateMessage" scope="session"/>
+	<c:remove var="updateMessages" scope="session"/>
 	</c:if>
 
 	<c:if test="${ not empty errorMessages }">
@@ -80,7 +80,7 @@ function deleteUser(){
 				</c:forEach>
 			</ul>
 		</div>
-	<c:remove var="errorMessage" scope="session"/>
+	<c:remove var="errorMessages" scope="session"/>
 	</c:if>
 
 <div class="header">
@@ -96,45 +96,78 @@ function deleteUser(){
 
 	<a href="signup">新規登録</a>
 </div>
-<table border="5">
-<tr><th>ログインID</th><th>名称</th><th>●</th><th>停止/復活</th><th>●</th></tr>
+<table border="7">
+	<tr>
+		<th>ログインID</th>
+		<th>名称</th>
+		<th>所属</th>
+		<th>役職</th>
+		<th>●</th>
+		<th>現在の状態／変更</th>
+		<th>●</th>
+	</tr>
 
 
-<c:forEach items="${users}" var="user">
-<tr>
-	<td><c:out value="${user.loginId}"></c:out></td>
-	<td><c:out value="${user.name}"></c:out><c:out value="${user.id}"></c:out></td>
-	<td><form action="settings" method="get">
-			<input type="hidden" id = "userId" name="userId" value="${user.id}">
-			<input type="submit" value="編集" />
-		</form>
-	</td>
-	<td><form action="manage" method="post">
-		<input type="hidden" name="user_id" value="${user.id}">
-			<c:if test="${user.isWorking == 1}">
-				<input type="hidden" name="is_working" value="0">
-				<p><input type="submit" value="停止する" onClick="return toWorking();"></p>
-			</c:if>
-			<c:if test="${user.isWorking == 0}">
-				<input type="hidden" name="is_working" value="1">
-				<p><input type="submit" value="復活する" onClick="return notToWorking();"></p>
-			</c:if>
-		</form>
-	</td>
-	<td><form action="deleteUser" method="post" >
-			<input type="hidden" name="userId" value="${user.id}">
-			<input type="hidden" name="userName" value="${user.name}">
-			<p><input type="submit" value="削除する" onClick="return deleteUser();"></p>
-		</form>
-	</td>
-<tr>
-</c:forEach>
+	<c:forEach items="${users}" var="user">
+		<tr>
+			<td><c:out value="${user.loginId}"></c:out></td>
+			<td><c:out value="${user.name}"></c:out></td>
+			<td>
+				<c:forEach items="${branches}" var="branch">
+					<c:if test="${user.branchId == branch.id}">
+						<c:out value="${branch.name}"></c:out>
+					</c:if>
+				</c:forEach>
+			</td>
+			<td>
+				<c:forEach items="${sections}" var="section">
+					<c:if test="${user.sectionId == section.id}">
+						<c:out value="${section.name}"></c:out>
+					</c:if>
+				</c:forEach>
+			</td>
+			<td>
+					<form action="settings" method="get">
+						<input type="hidden" id = "userId" name="userId" value="${user.id}">
+						<input type="submit" value="編集" />
+					</form>
+			</td>
+			<td>
+				<form action="manage" method="post">
+					<input type="hidden" name="user_id" value="${user.id}">
+						<c:if test="${user.isWorking == 1}">
+							<c:out value="使用可 ／"></c:out>
+							<c:if test="${user.id != loginUser.id}">
+								<input type="hidden" name="is_working" value="0">
+								<input type="submit" value="停止する" onClick="return notToWorking();">
+							</c:if>
+						</c:if>
+						<c:if test="${user.isWorking == 0}">
+							<c:out value="停止中 ／"></c:out>
+							<c:if test="${user.id != loginUser.id}">
+								<input type="hidden" name="is_working" value="1">
+								<input type="submit" value="復活する" onClick="return toWorking();">
+							</c:if>
+						</c:if>
+
+				</form>
+			</td>
+			<td>
+				<c:if test="${user.id != loginUser.id}">
+					<form action="deleteUser" method="post" >
+						<input type="hidden" name="userId" value="${user.id}">
+						<input type="hidden" name="userName" value="${user.name}">
+						<p><input type="submit" value="削除する" onClick="return deleteUser();"></p>
+					</form>
+				</c:if>
+			</td>
+		<tr>
+	</c:forEach>
 </table>
-
-
-
 <br />
-<br />	<a href="./">HOME</a>
+<br />
+<br />
+<a href="./">HOME</a>
 <br />
 <br />
 <div class="copyright">Copyright(c)Naoko Takizawa</div>
