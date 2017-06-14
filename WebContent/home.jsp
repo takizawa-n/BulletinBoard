@@ -14,6 +14,7 @@
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>掲示板</title>
+	<link href="./css/bulletinBoard.css" rel="stylesheet" type="text/css">
 
 <script type="text/javascript">
 
@@ -68,8 +69,17 @@ function deleteComment(){
 
 </head>
 <body>
-<div class="main-contents">
-<a href="logout" onClick="return logout();">ログアウト</a>
+
+
+<div class="logout">
+	<a href="logout" onClick="return logout();">ログアウト</a>
+		<c:if test="${ not empty loginUser }">
+		<div class="profile">
+			Login User :<c:out value="${loginUser.name}" />
+		</div>
+	</c:if>
+</div>
+
 <div class="header">
 	<c:if test="${ not empty deleteMessages }">
 		<div class="deleteMessage">
@@ -92,24 +102,20 @@ function deleteComment(){
 		</div>
 	<c:remove var="errorMessages" scope="session"/>
 	</c:if>
+</div>
 
 
 	<h1>■□　掲示板　□■</h1><br />
-	<br />
-	<br />
+
+
+<div class="">
 	<a href="newPost">新規投稿</a>
 	<c:if test="${ loginUser.sectionId == 1 }">
 		<a href="manage">ユーザー管理</a>
 	</c:if>
-
 </div>
 
-<c:if test="${ not empty loginUser }">
-	<div class="profile">
-		<div class="name"><h3><c:out value="${loginUser.name}" />さんがログイン中です</h3></div>
 
-	</div>
-</c:if>
 
 
 <div class="sort">
@@ -137,82 +143,86 @@ function deleteComment(){
 	</form>
 	<br />
 	<input type="button" onclick="location.href='./'" value="すべてを表示する">
-
 </div>
 
 
 
 
 
+<div class="main-contents">
 
-<c:if test="${ not empty resultMessages }">
-	<div class="resultMessage">
-		<ul>
-			<c:forEach items="${resultMessages}" var="resultMessage">
-				<li><c:out value="${resultMessage}" />
-			</c:forEach>
-		</ul>
-	</div>
-	<c:remove var="resultMessages" scope="session"/>
-</c:if>
+	<div class="message">
+		<c:if test="${ not empty resultMessages }">
+				<ul>
+					<c:forEach items="${resultMessages}" var="resultMessage">
+						<li><c:out value="${resultMessage}" />
+					</c:forEach>
+				</ul>
+			<c:remove var="resultMessages" scope="session"/>
+		</c:if>
+	</div>>
 
 
-	<div class="posts">
-		<c:forEach items="${posts}" var="post">
-			<div class="post">
+	<c:forEach items="${posts}" var="post">
+
+		<div class="posts">
 			<br />
 			<br />
-				<div class="user-name">
-					投稿No.<span class="id"><c:out value="${post.id}" /></span><br />
-					投稿者：<span class="name"><c:out value="${post.name}" /></span><br />
-					カテゴリー：<span class="category"><c:out value="${post.category}" /></span>
-				</div>
-					★件名<div class="tiltle"><c:out value="${post.title}" /></div>
-					★本文<div class="text">
+					<sub>
+						<span class=backBlack><c:out value="${post.category}"/></span>
+						<span class=backBlack><c:out value="${post.name}" /></span>
+						<span><fmt:formatDate value="${post.insertDate}" pattern="yyyy/MM/dd HH:mm:ss" /></span>
+					</sub>
+					<br />
+					<h2>件名：<c:out value="${post.title}" /></h2>
+					<br />
+					<div class="text">本文
 							<c:forTokens var="obj" items="${post.text}" delims="
 							">
 								<c:out value="${obj}"/><br>
 							</c:forTokens>
-							<br>
+							<br />
 					</div>
-					(投稿日時  <span class="date"><fmt:formatDate value="${post.insertDate}" pattern="yyyy/MM/dd HH:mm:ss" /></span>)
 
-				<c:if test="${(loginUser.sectionId == 2) || (loginUser.id == post.userId) ||
-							((loginUser.sectionId == 3) && (loginUser.branchId == post.branchId)) ||
-										(loginUser.id == post.userId)}">
-					<form action="deletePost" method="post" >
-						<input type="hidden" name="id" value="${post.id}">
-						<p><input type="submit" value="削除する" onClick="return deletePost();"></p>
-					</form>
-				</c:if>
+
+					<c:if test="${(loginUser.sectionId == 2) || (loginUser.id == post.userId) ||
+								((loginUser.sectionId == 3) && (loginUser.branchId == post.branchId)) ||
+											(loginUser.id == post.userId)}">
+						<form action="deletePost" method="post" >
+							<input type="hidden" name="id" value="${post.id}">
+							<p><input type="submit" value="削除する" onClick="return deletePost();"></p>
+						</form>
+					</c:if>
+			<br />
+			<br />
+
+			<div class="newComment">
+				<form action="comment" method="post"><br />
+					<input type="hidden" name="postId" value="${post.id}">
+					<label for="本文">この投稿にコメントする</label><br />
+					<textarea name="text"  cols="35" rows="5" id="text"><c:out value="${comment.text}" /></textarea><br />
+					<input type="submit" value="コメントを送信" />(500文字以内)<br />
+					<br />
+				</form>
 			</div>
-			<br />
-			<br />
 
-			<form action="comment" method="post"><br />
-				<input type="hidden" name="postId" value="${post.id}">
-				<label for="本文">この投稿にコメントする</label><br />
-				<textarea name="text"  cols="35" rows="5" id="text"><c:out value="${comment.text}" /></textarea><br />
-				<input type="submit" value="コメントを送信" />(500文字以内)<br />
-				<br />
-			</form>
-
-
-				▼　投稿No.<c:out value="${post.id}" />（<c:out value="${post.name}" />さん）へのコメント欄
-				<br>
+			<div class="commentList">
+				<h3>▼　Comments</h3>
 					<c:forEach items="${comments}" var="comment">
 						<c:if test="${comment.postId == post.id}">
-							<div class="comment">
-								<div class="name">From：<c:out value="${comment.name}" />さん</div>
+							<div class="oneComment">
+							<br />
+								<div class="sub">
+									<span>From：<c:out value="${comment.name}" /></span><br />
+									<fmt:formatDate value="${comment.insertDate}" pattern="yyyy/MM/dd HH:mm:ss" />
+								</div>
 								<div class="text">
 									<c:forTokens var="obj" items="${comment.text}" delims="
 									">
 										<c:out value="${obj}"/><br>
 									</c:forTokens>
-									<br>
+									<br />
 								</div>
-								<div class="insertDate">
-									(投稿日時  <fmt:formatDate value="${comment.insertDate}" pattern="yyyy/MM/dd HH:mm:ss" />）</div>
 
 								<c:if test="${(loginUser.sectionId == 2) || (loginUser.id == comment.userId) ||
 											((loginUser.sectionId == 3) && (loginUser.branchId == comment.branchId)) ||
@@ -222,19 +232,12 @@ function deleteComment(){
 										<p><input type="submit" value="削除する" onClick="return deleteComment();"></p>
 									</form>
 								</c:if>
-								<br>
-								===================
 							</div>
 						</c:if>
-					</c:forEach>
-
-
-			<br />
-			************
-			<br />
-
-		</c:forEach>
-	</div>
+				</c:forEach>
+			</div>
+		</div>
+	</c:forEach>
 
 
 <br />
