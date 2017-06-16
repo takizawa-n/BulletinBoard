@@ -73,6 +73,8 @@ import bulletinBoard.service.PostService;
 				request.setAttribute("posts", posts);
 				request.setAttribute("comments", comments);
 				request.setAttribute("categories", categories);
+				searchResult.add("すべての投稿（" + posts.size()+ "件）を表示しています");
+				session.setAttribute("resultMessages", searchResult);
 
 				request.getRequestDispatcher("home.jsp").forward(request, response);
 				return;
@@ -87,7 +89,7 @@ import bulletinBoard.service.PostService;
 					startDate = "1970-01-01 00:00:01";
 					endDate = "2037-12-31 23:59:59";
 					posts = new PostService().getSortedOnlyDate(startDate, endDate);
-					searchResult.add("すべての投稿を表示しています");
+					searchResult.add("すべての投稿（" + posts.size()+ "件）を表示しています");
 
 				}
 

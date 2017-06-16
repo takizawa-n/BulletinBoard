@@ -16,7 +16,8 @@
 
 <div class="login">
 
-	<h1>わったい菜	掲示板</h1>
+	<h2>わったい菜	掲示板</h2>
+	<br />
 
 	<div class="messages">
 		<c:if test="${ not empty deleteMessages }">
@@ -42,15 +43,19 @@
 
 
 	<form action="login" method="post">
-		<label for="loginId">ログインID</label>
-		<input name="loginId" value="${reqLoginId}" id="loginId" /><br />
-		<label for="password">パスワード</label>
-		<input name="password" type="password" id="password"/><br />
+		<div class="input-form">
+			<label for="loginId">ログインID</label>
+			<input name="loginId" value="${reqLoginId}" id="loginId" /><br />
+			<label for="password">パスワード</label>
+			<input name="password" type="password" id="password"/><br />
+		</div>
 		<br />
 		<br />
 		<input type="submit" value="ログイン" />
 		<br />
+		<br />
 	</form>
+
 </div>
 <br />
 <br />

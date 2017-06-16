@@ -16,10 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import bulletinBoard.beans.Category;
 import bulletinBoard.beans.Post;
 import bulletinBoard.beans.User;
-import bulletinBoard.beans.UserComment;
-import bulletinBoard.beans.UserPost;
 import bulletinBoard.service.CategoryService;
-import bulletinBoard.service.CommentService;
 import bulletinBoard.service.PostService;
 
 @WebServlet(urlPatterns = { "/newPost" })
@@ -55,7 +52,7 @@ public class NewPostServlet extends HttpServlet {
 		System.out.println(newCategory);//■
 
 
-		//以下のifで、入力内容にエラーがある場合
+		//入力内容にエラーがある場合、以下のif内の処理
 		if (isValid(request, errorMessages) != true) {
 
 			post.setNewCategory(newCategory);
@@ -68,16 +65,20 @@ public class NewPostServlet extends HttpServlet {
 			request.setAttribute("post", post);
 			request.getRequestDispatcher("/newPost.jsp").forward(request, response);
 			return;
+
+		//以下、エラーなしの場合（投稿を登録）
 		} else {
 
 			//既存のカテゴリーから選んだ場合
 			if(!category.equals("new")){
-				post.setCategory(category);//postに既存のカテゴリー
+				//postに既存のカテゴリーをset
+				post.setCategory(category);
 			}
 
 			//新規のカテゴリーを入力した場合
 			if(StringUtils.isBlank(newCategory) != true){
-				post.setCategory(newCategory);//postに新規のカテゴリー
+				//postに新規のカテゴリーをset
+				post.setCategory(newCategory);
 
 				//新規カテゴリーをDBに登録
 				Category insertCategory = new Category();
@@ -85,16 +86,10 @@ public class NewPostServlet extends HttpServlet {
 				new CategoryService().register(insertCategory);
 			}
 
-			new PostService().register(post);//postにセットした（新規投稿）情報を登録
+			//postにセットした（新規投稿）情報を登録
+			new PostService().register(post);
 
-			List<UserPost> posts = new PostService().getPosts();
-			List<UserComment> comments = new CommentService().getComments();
-			List<Category> categories = new CategoryService().getCategories();
-			request.setAttribute("posts", posts);
-			request.setAttribute("comments", comments);
-			request.setAttribute("categories", categories);
-
-			request.getRequestDispatcher("/home.jsp").forward(request, response);
+			response.sendRedirect("./");
 
 		}
 	}
@@ -108,10 +103,10 @@ public class NewPostServlet extends HttpServlet {
 		Category categoryCheck = new CategoryService().getCategory(newCategory); //newカテゴリーがあるか否かをget
 
 		if (StringUtils.isBlank(title) == true) {
-			errorMessages.add("タイトルを入力してください");
+			errorMessages.add("件名を入力してください");
 		}
 		if (50 < title.length()) {
-			errorMessages.add("タイトルは50文字以下で入力してください");
+			errorMessages.add("件名は50文字以下で入力してください");
 		}
 		if (StringUtils.isBlank(text) == true) {
 			errorMessages.add("本文を入力してください");

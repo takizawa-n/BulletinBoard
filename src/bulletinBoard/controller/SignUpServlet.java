@@ -103,9 +103,9 @@ public class SignUpServlet extends HttpServlet {
 		}
 
 		if (StringUtils.isBlank(name) == true) {
-			messages.add("パスワードを入力してください");
+			messages.add("名称を入力してください");
 		} else if (name.length() > 10) {
-			messages.add("名前は10文字以下で入力してください");
+			messages.add("名称は10文字以内で入力してください");
 		}
 
 		if (messages.size() == 0) {
