@@ -1,0 +1,169 @@
+@CHARSET "UTF-8";
+
+
+body {
+	background-color: #ffffff;
+	text-align: center;
+	font-family: Meiryo;
+}
+
+
+h3 {
+	color: #408080;
+}
+
+.login {
+	background: #ffffff;
+ 	width: 400px;
+ 	height: 100%;
+ 	padding: 20px;
+ 	text-align: center;
+ 	border: 3px solid #408080;
+ 	margin: 30px auto;
+}
+
+
+.main-contents {
+	background: #ffffff;
+ 	width: 800px;
+ 	text-align: center;
+ 	border: none;
+ 	margin: 30px auto;
+
+}
+
+.input-form {
+	background: #ffffff;
+ 	width: 400px;
+ 	text-align: left;
+ 	border: none;
+}
+
+.list-form {
+	background: #ffffff;
+ 	width: 800px;
+ 	text-align: left;
+ 	border: none;
+}
+
+.sort {
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+    padding: 0.5em 1em;
+
+    border: solid 3px #5ae2c7;
+    border-radius: 8px;
+    text-align: center;
+    width: 210px;
+}
+.sort .sort-title {
+    position: absolute;
+    top: -13px;
+    left: 10px;
+    padding: 0 9px;
+    line-height: 1;
+    font-size: 19px;
+    background: #FFF;
+    color: #5ae2c7;
+    font-weight: bold;
+}
+.sort p {
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+.posts-area {
+	display: inline-block;
+	background: #ffffff;
+ 	text-align: left;
+ 	padding: 10px;
+ 	width: 500px;
+
+}
+
+.onePost {
+	background: #ffffff;
+ 	text-align: left;
+ 	padding: 20px;
+ 	border: 5px double #408080;
+ 	margin: 30px auto;
+}
+
+.post-title {
+	background: #408080;
+	color: #ffffff;
+}
+
+.commentList {
+ 	width: 50%;
+ 	padding: 5px;
+ 	text-align: left;
+ 	margin-left: auto;
+}
+
+.newComment {
+ 	width: 70%;
+ 	padding: 5px;
+ 	text-align: left;
+
+}
+
+.oneComment {
+ 	text-align: left;
+ 	border-bottom-style: dotted;
+}
+
+.sub1 {
+	text-align: right;
+	background-color: #408080;
+	color: #ffffff;
+
+}
+.sub2 {
+	text-align: right;
+	background-color: #8f8f8f;
+	color: #ffffff;
+
+}
+
+.backBlack {
+
+	font-size: 20px;
+	background-color: #5ae2c7;
+	color: #ffffff;
+	padding: 5px;
+}
+
+
+
+
+.table th {
+	background-color: #408080;
+	color: #ffffff;
+}
+
+.table td {
+  text-align: left;
+}
+
+
+.messages {
+	text-align: left;
+	color: #ff0000;
+}
+
+.logout {
+	text-align: right;
+}
+
+.secret {
+	text-align: center;
+}
+
+
+
+
+
+

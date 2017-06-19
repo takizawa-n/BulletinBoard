@@ -35,7 +35,6 @@ $(function () {
 	});
 
 	$("#datepicker").change(function(){
-
 		$("#datepicker2").datepicker("option","minDate",$("#datepicker").val())
 	})
 
